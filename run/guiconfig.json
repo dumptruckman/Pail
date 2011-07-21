@@ -1,0 +1,44 @@
+{
+  "Window Title" : "MC Server GUI",
+  "Input History Max Size" : 30,
+  "Use Proxy Server" : true,
+  "Proxy Port" : 25568,
+  "MC Server Start on Pail Start" : false,
+  "Command Prefix" : "!",
+  "Custom Button 1" : "Edit Tasks",
+  "Custom Button 2" : "Edit Tasks",
+  "Display" : {
+    "Text Color" : "000000",
+    "Background Color" : "FFFFFF",
+    "[INFO] Color" : "339900",
+    "[WARNING] Color" : "CC6600",
+    "[SEVERE] Color" : "FF0000",
+    "Text Size" : 3
+  },
+  "CMD Line" : {
+    "Java Executable" : "java",
+    "Server Jar File" : "craftbukkit-1000.jar",
+    "Bukkit" : true,
+    "Xmx Memory" : "1024M",
+    "Xincgc" : true,
+    "Extra Arguments" : "",
+    "Use Custom Launch" : false,
+    "Custom Launch Line" : "java -Djline.terminal=jline.UnsupportedTerminal -Xmx1024M -Xincgc -jar  nogui -d \"yyyy-MM-dd HH:mm:ss\" "
+  },
+  "Backups" : {
+    "Path" : "C:\\Projects\\MC-Server-GUI--multi-\\run\\mcservergui-backups",
+    "Zip Backup" : true,
+    "Clear Log" : false,
+    "Paths to Backup" : [ ]
+  },
+  "Schedule" : {
+    "Events" : {
+    }
+  },
+  "Web Interface" : {
+    "Port" : 42424,
+    "Enabled" : false,
+    "Password" : "password",
+    "Disable Get Output Notifications" : false
+  }
+}
