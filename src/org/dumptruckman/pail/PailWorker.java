@@ -25,7 +25,7 @@ import java.net.HttpURLConnection;
  *
  * @author dumptruckman
  */
-public class PailWorker implements java.util.Observer {
+public class PailWorker {
 
     public PailWorker(Pail pail/*, MCServerModel server*/) {
         this.pail = pail;
@@ -48,20 +48,8 @@ public class PailWorker implements java.util.Observer {
 
     }
 
-    public void update(java.util.Observable o, Object arg) {
-        if (arg.equals("pid")) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    serverPid = pail.server.getPid();
-                }
-            });
-        } else if (arg.equals("piderror")) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    serverPid = -1;
-                }
-            });
-        }
+    public void setServerPid(long i) {
+        serverPid = i;
     }
 
     public void startMainWorker() {

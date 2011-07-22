@@ -7,14 +7,13 @@ package org.dumptruckman.pail.backup;
 
 import java.util.Observable;
 import java.io.*;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.util.zip.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLDocument;
 
 import org.dumptruckman.pail.Pail;
 import org.dumptruckman.pail.config.Config;
-//import org.jdesktop.application.Task;
 
 /**
  *
@@ -22,10 +21,9 @@ import org.dumptruckman.pail.config.Config;
  */
 public class Backup extends Observable {
 
-    public Backup(Pail pail, javax.swing.JTextPane backupLog) {
-        this.config = pail.config;
-        //task = new BackupTask(pail.getApplication());
-        this.backupLog = backupLog;
+    public Backup(Pail pail) {
+        this.pail = pail;
+        task = new BackupTask();
         nl = System.getProperty("line.separator");
         fs = System.getProperty("file.separator");
         try {
@@ -36,7 +34,9 @@ public class Backup extends Observable {
     }
 
     public void startBackup() {
-        //task.execute();
+        new File(pail.config.backups.getPath()).mkdir(); // Creates backup directory if it doesn't exist
+        pail.backupStatusLog.setText("");
+        task.execute();
     }
 
     public void addTextToBackupLog(String textToAdd) {
@@ -45,38 +45,31 @@ public class Backup extends Observable {
             @Override public void run() {
                 try
                 {
-                    ((HTMLEditorKit)backupLog.getEditorKit())
-                            .insertHTML((HTMLDocument)backupLog.getDocument(),
-                            backupLog.getDocument().getEndPosition().getOffset()-1,
+                    ((HTMLEditorKit)pail.backupStatusLog.getEditorKit())
+                            .insertHTML((HTMLDocument)pail.backupStatusLog.getDocument(),
+                            pail.backupStatusLog.getDocument().getEndPosition().getOffset()-1,
                             text,
                             1, 0, null);
                 } catch ( Exception e ) {
                     System.out.println("Error appending text to console output");
                 }
-                backupLog.setCaretPosition(backupLog.getDocument().getLength());
+                pail.backupStatusLog.setCaretPosition(pail.backupStatusLog.getDocument().getLength());
             }
         });
     }
 
-    public BackupTask getTask() {
-        return task;
-    }
-
-    private class BackupTask {//extends Task {
+    public class BackupTask extends SwingWorker<Boolean, Integer> {
 
         public BackupTask() {
             wantsToRun = true;
         }
 
-       
-
-        protected Boolean doInBackground() {
-
-            if (!config.backups.getPathsToBackup().isEmpty()) {
+        public Boolean doInBackground() {
+            if (!pail.config.backups.getPathsToBackup().isEmpty()) {
 
                 // Copy paths to backup
                 String now = java.util.Calendar.getInstance().getTime().toString().replaceAll(":", ".");
-                File backupfolder = new File(config.backups.getPath() + fs + now);
+                File backupfolder = new File(pail.config.backups.getPath() + fs + now);
                 if (backupfolder.mkdir()) {
                     addTextToBackupLog("Created backup folder " + backupfolder.toString() + nl);
                 } else {
@@ -85,13 +78,13 @@ public class Backup extends Observable {
                 }
                 // Perform the backup
                 if (!wantsToRun) return false;
-                for (int i = 0 ; i < config.backups.getPathsToBackup().size(); i++) {
+                for (int i = 0 ; i < pail.config.backups.getPathsToBackup().size(); i++) {
                     if (!wantsToRun) return false;
-                    backup(new File(config.backups.getPathsToBackup().get(i)), backupfolder);
+                    backup(new File(pail.config.backups.getPathsToBackup().get(i)), backupfolder);
                 }
                 if (!wantsToRun) return false;
                 // Delete the server log if set to do so
-                if (config.backups.getClearLog()) {
+                if (pail.config.backups.getClearLog()) {
                     addTextToBackupLog("Deleting server.log...");
                     if (new File("./server.log").delete()) {
                         addTextToBackupLog("<font color=green>Success!");
@@ -102,13 +95,13 @@ public class Backup extends Observable {
 
                 if (!wantsToRun) return false;
                 // Compression
-                if (config.backups.getZip()) {
+                if (pail.config.backups.getZip()) {
                     addTextToBackupLog(nl + "<br>Zipping backup folder to " + backupfolder.getName() + ".zip...");
                     try {
                         ZipOutputStream zipout = new ZipOutputStream(
                                 new BufferedOutputStream(
                                 new FileOutputStream(
-                                config.backups.getPath() + fs + backupfolder.getName() + ".7z")));
+                                pail.config.backups.getPath() + fs + backupfolder.getName() + ".7z")));
                         depth = 0;
                         if (!wantsToRun) return false;
                         addDirToZip(backupfolder, zipout);
@@ -134,30 +127,36 @@ public class Backup extends Observable {
             }
         }
 
-        protected void finished() {
+        public void done() {
             try {
-                //@TODO backupSuccess = (Boolean)get();
+                backupSuccess = this.get();
                 wantsToRun = false;
                 if (backupSuccess) {
                     addTextToBackupLog(nl + "<font color=green>Backup operation completed succesfully!");
                 } else {
                     addTextToBackupLog(nl + "<font color=red>Backup operation encountered an error.  Aborting.");
                 }
-            //} //catch (InterruptedException e) {
-              //  wantsToRun = false;
-              //  e.printStackTrace();
-            //} //catch (java.util.concurrent.ExecutionException e) {
-              //  wantsToRun = false;
-              //  e.printStackTrace();
+            } catch (InterruptedException e) {
+                wantsToRun = false;
+                e.printStackTrace();
+            } catch (java.util.concurrent.ExecutionException e) {
+                wantsToRun = false;
+                e.printStackTrace();
             } catch (java.util.concurrent.CancellationException e) {
                 wantsToRun = false;
                 System.out.println("oop");
                 addTextToBackupLog("<font color=red>Backup operation was cancelled!");
-                //cancel(true);
+                this.cancel(true);
             }
-            setChanged();
-            notifyObservers("finishedBackup");
-            //super.finished();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if (pail.server.isRunning()) {
+                        pail.sendInput("say Server backup complete!");
+                        pail.sendInput("save-on");
+                    }
+                    pail.controlSwitcher("!BACKUP");
+                }
+            });
         }
     }
 
@@ -307,9 +306,8 @@ public class Backup extends Observable {
     private String fs;
     private String workingDir;
     private int depth;
-    private Config config;
-    private BackupTask task;
-    private javax.swing.JTextPane backupLog;
+    private Pail pail;
+    public BackupTask task;
     private boolean backupSuccess;
     public boolean wantsToRun;
 }

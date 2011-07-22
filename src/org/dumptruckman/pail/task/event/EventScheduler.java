@@ -16,7 +16,7 @@ import static org.quartz.CronScheduleBuilder.*;
  * @author dumptruckman
  */
 public class EventScheduler {
-    public static boolean scheduleEvent(EventModel event, Scheduler scheduler, Pail pail) {
+    public static boolean scheduleEvent(EventModel event, Pail pail) {
         JobDetail job;
         Trigger trigger;
         job = newJob(Task.class)
@@ -32,7 +32,7 @@ public class EventScheduler {
                     .withSchedule(cronSchedule(event.getCronEx()))
                     .build();
             try {
-                scheduler.scheduleJob(job, trigger);
+                pail.getScheduler().scheduleJob(job, trigger);
                 return true;
             } catch (SchedulerException se) {
                 System.out.println("scheduling exception error");

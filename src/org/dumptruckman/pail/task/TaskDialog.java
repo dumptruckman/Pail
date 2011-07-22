@@ -31,24 +31,14 @@ import static org.dumptruckman.pail.tools.TimeTools.*;
 public class TaskDialog extends javax.swing.JDialog {
 
     /** Creates new form TaskDialog */
-    public TaskDialog(
-            java.awt.Frame parent,
-            /*GUIListModel taskList,*/
-            Config config,
-            Scheduler scheduler,
-            /*java.util.List<EventModel> scheduleEvents,*/
-            Pail pail) {
-        super(parent);
-        //this.taskList = taskList;
-        this.config = config;
-        this.scheduler = scheduler;
-        //this.scheduleEvents = scheduleEvents;
+    public TaskDialog(Pail pail) {
+        super(pail);
+        
         this.pail = pail;
         borderTitle = "New Task";
         warningListModel = new GUIListModel<ServerWarning>();
         warningListModel.clear();
-        //serverWarningList = new java.util.ArrayList<ServerWarning>();
-        //serverWarningList.clear();
+
         boldFont = new java.awt.Font("Tahoma", java.awt.Font.BOLD, 11);
         normalFont = new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11);
         initComponents();
@@ -59,26 +49,15 @@ public class TaskDialog extends javax.swing.JDialog {
         updateTimeSummary();
     }
 
-    public TaskDialog(
-            java.awt.Frame parent,
-            /*GUIListModel taskList,*/
-            Config config,
-            Scheduler scheduler,
-            /*java.util.List<EventModel> scheduleEvents,*/
-            Pail pail,
-            EventModel editEvent) {
-        super(parent);
-        //this.taskList = taskList;
-        this.config = config;
-        this.scheduler = scheduler;
-        //this.scheduleEvents = scheduleEvents;
+    public TaskDialog(Pail pail, EventModel editEvent) {
+        super(pail);
+
         this.pail = pail;
         this.editEvent = editEvent;
         borderTitle = "Edit Task";
         warningListModel = new GUIListModel<ServerWarning>();
         warningListModel.clear();
-        //serverWarningList = new java.util.ArrayList<ServerWarning>();
-        //serverWarningList.clear();
+
         boldFont = new java.awt.Font("Tahoma", java.awt.Font.BOLD, 11);
         normalFont = new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11);
         initComponents();
@@ -1604,21 +1583,21 @@ public class TaskDialog extends javax.swing.JDialog {
                 event.setParams(params);
                 event.setWarningList(warningListModel);
                 if (editEvent != null) {
-                    config.schedule.getEvents().removeElement(editEvent);
+                    pail.config.schedule.getEvents().removeElement(editEvent);
                     pail.customButtonBoxModel1.removeElement(editEvent.getName());
                     pail.customButtonBoxModel2.removeElement(editEvent.getName());
                     try {
-                        scheduler.deleteJob(JobKey.jobKey(editEvent.getName()));
+                        pail.getScheduler().deleteJob(JobKey.jobKey(editEvent.getName()));
                     } catch (SchedulerException se) {
                         System.out.println("Error removing old task");
                     }
                 }
-                config.schedule.getEvents().add(event);
+                pail.config.schedule.getEvents().add(event);
                 if (taskIsCustomButtonCheckBox.isSelected()) {
                     pail.customButtonBoxModel1.addElement(event.getName());
                     pail.customButtonBoxModel2.addElement(event.getName());
                 } else {
-                    scheduleEvent(event, scheduler, pail);
+                    scheduleEvent(event, pail);
                 }
                 //config.save();
                 //configLoader.save();
@@ -2027,17 +2006,15 @@ public class TaskDialog extends javax.swing.JDialog {
         });
     }
 
-    //private GUIListModel taskList;
+
     private GUIListModel<ServerWarning> warningListModel;
-    private Config config;
     private EventModel editEvent;
     private Pail pail;
-    //private java.util.List<ServerWarning> serverWarningList;
-    //private java.util.List<EventModel> scheduleEvents;
+
     private ServerWarningDialog warningDialog;
     private java.util.List<javax.swing.JToggleButton> dayOfWeek;
     private java.util.List<javax.swing.JToggleButton> month;
-    private Scheduler scheduler;
+
     private String task;
     private java.awt.Font boldFont;
     private java.awt.Font normalFont;

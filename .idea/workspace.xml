@@ -2,23 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9499fde1-e1a9-4258-a0d9-8d59f91b9434" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/Billing_Manager.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/CheckBoxtree.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/JSON.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/MiGLayout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/jsoup.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/quartz.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sigar.xml" />
+      <change type="DELETED" beforePath="C:\Projects\Pail\src\org\dumptruckman\pail\task\ServerWarningDialog.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Projects\Pail\src\org\dumptruckman\pail\task\TaskDialog.form" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pail.iml" afterPath="$PROJECT_DIR$/Pail.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/PailWorker.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/PailWorker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerModel.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerReceiver.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerReceiver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/task/event/EventScheduler.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/task/event/EventScheduler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/dumptruckman/pail/tools/ConsoleParser.java" afterPath="$PROJECT_DIR$/src/org/dumptruckman/pail/tools/ConsoleParser.java" />
     </list>
     <ignored path="MC-Server-GUI--multi-.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,7 +91,7 @@
       <file leaf-file-name="Pail.properties" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="25" selection-start="5440" selection-end="5440" vertical-scroll-proportion="0.0">
+            <state line="131" column="38" selection-start="5757" selection-end="5757" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,7 +100,34 @@
       <file leaf-file-name="Pail.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="313" column="32" selection-start="11269" selection-end="11269" vertical-scroll-proportion="0.33243242">
+            <state line="1964" column="31" selection-start="100987" selection-end="100987" vertical-scroll-proportion="0.41666666">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TaskDialog.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1599" column="41" selection-start="86380" selection-end="86380" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventScheduler.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/event/EventScheduler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="29" selection-start="985" selection-end="985" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Backup.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="60" column="10" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -123,22 +147,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/mcservergui/gui/resources/ColorChooser.properties" />
-        <option value="$PROJECT_DIR$/src/mcservergui/gui/ColorChooser.java" />
-        <option value="$PROJECT_DIR$/src/mcservergui/task/ServerWarningDialog.java" />
-        <option value="$PROJECT_DIR$/src/mcservergui/backup/Backup.java" />
-        <option value="$PROJECT_DIR$/src/mcservergui/Pail.properties" />
-        <option value="$PROJECT_DIR$/src/mcservergui/resources/Pail.properties" />
         <option value="$PROJECT_DIR$/src/mcservergui/Pail.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/mcservergui/mcservergui/Pail.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/mcservergui/pail/Pail.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Main.properties" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/Main.java" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/AboutBox.properties" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/AboutBox.java" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/tools/ConsoleParser.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerReceiver.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/PailWorker.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerModel.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/task/event/EventScheduler.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java" />
+        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java" />
       </list>
     </option>
   </component>
@@ -177,7 +201,6 @@
     <panes>
       <pane id="Scope" />
       <pane id="Favorites" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -206,7 +229,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="run" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -220,7 +243,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -234,29 +261,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pail" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pail" />
+              <option name="myItemId" value="pail" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dictionaries" />
+              <option name="myItemId" value="tools" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -270,20 +283,117 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="copyright" />
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="task" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="task" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="event" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mcserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="backup" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -296,9 +406,9 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -449,21 +559,21 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6708075" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39956647" sideWeight="0.6708075" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32944787" sideWeight="0.66129035" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32947975" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6086956" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39976957" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3375959" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32608697" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6086956" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993865" sideWeight="0.6708075" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32875723" sideWeight="0.6086956" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39130434" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32736573" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32736573" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39897698" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -516,21 +626,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CHANGELOG">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="84" selection-start="618" selection-end="618" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/PailWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="29" selection-start="883" selection-end="883" vertical-scroll-proportion="0.36637932" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/resources/TaskDialog.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="20" selection-start="5179" selection-end="5193" vertical-scroll-proportion="-0.44008264" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/resources/ColorChooser.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="19" selection-start="28" selection-end="28" vertical-scroll-proportion="0.06841046" />
@@ -544,16 +639,6 @@
     <entry file="jar://C:/Program Files/Java/jdk1.6.0_25/jre/lib/rt.jar!/sun/awt/image/URLImageSource.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="27" column="0" selection-start="1095" selection-end="1095" vertical-scroll-proportion="0.79141104" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="655" column="61" selection-start="30821" selection-end="30821" vertical-scroll-proportion="0.23109244" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="8" selection-start="2053" selection-end="2053" vertical-scroll-proportion="0.035714287" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/ColorChooser.java">
@@ -571,21 +656,66 @@
         <state line="68" column="67" selection-start="3338" selection-end="3338" vertical-scroll-proportion="0.22478992" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/tools/ConsoleParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="209" column="19" selection-start="8641" selection-end="8641" vertical-scroll-proportion="0.6439791" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/ChangeLog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="55" column="63" selection-start="1869" selection-end="1869" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="0" selection-start="2351" selection-end="2351" vertical-scroll-proportion="0.6458333">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/PailWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="174" column="0" selection-start="6216" selection-end="6216" vertical-scroll-proportion="0.022972973">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/mcserver/MCServerModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="25" selection-start="679" selection-end="679" vertical-scroll-proportion="0.022576362">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="25" selection-start="5440" selection-end="5440" vertical-scroll-proportion="0.0">
+        <state line="131" column="38" selection-start="5757" selection-end="5757" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/event/EventScheduler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="29" selection-start="985" selection-end="985" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1599" column="41" selection-start="86380" selection-end="86380" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="10" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="313" column="32" selection-start="11269" selection-end="11269" vertical-scroll-proportion="0.33243242">
+        <state line="1964" column="31" selection-start="100987" selection-end="100987" vertical-scroll-proportion="0.41666666">
           <folding />
         </state>
       </provider>
@@ -648,7 +778,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -668,7 +797,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>MiGLayout</last-edited>
+          <last-edited>sigar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

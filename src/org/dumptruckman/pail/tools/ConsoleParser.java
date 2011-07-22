@@ -206,6 +206,7 @@ public class ConsoleParser {
                 text = text.replaceFirst(text.substring(index, index), "");
             }
         }
+        //return "<html>" + text + "</html>";
         return text;
     }
 

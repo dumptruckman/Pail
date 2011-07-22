@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.List;
+import java.util.Timer;
 
 import org.dumptruckman.pail.Pail;
 import org.hyperic.sigar.ptql.ProcessFinder;
@@ -21,9 +22,9 @@ import org.dumptruckman.pail.proxyserver.Player;
  *
  * @author dumptruckman
  */
-public class MCServerModel extends Observable implements Observer, java.beans.PropertyChangeListener {
+public class MCServerModel implements java.beans.PropertyChangeListener {
     
-    public MCServerModel(Pail pail/*Config newConfig*/)
+    public MCServerModel(Pail pail)
     {
         this.pail = pail;
         this.serverRunning = false;
@@ -71,6 +72,7 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
 
     // Method for starting the server
     public String start() {
+        timer = null;
         File jar = new File(pail.config.cmdLine.getServerJar());
         if (pail.config.getProxy()) {
             proxyServer = new ProxyServer(pail, serverProps);
@@ -94,23 +96,16 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
                 long[] pidlistafter = pf.find("State.Name.sw=java");
                 if (pidlistafter.length - pidlistbefore.length == 1) {
                     pid = pidlistafter[pidlistafter.length-1];
-                    setChanged();
-                    notifyObservers("pid");
+                    pail.pailWorker.setServerPid(pid);
                 } else {
                     pid = 0;
-                    setChanged();
-                    notifyObservers("piderror");
+                    pail.pailWorker.setServerPid(-1);
                 }
             } catch (UnsatisfiedLinkError ule) { 
                 if (ps == null) {
                     ps = pb.start();
                 }
             }
-            
-            // Flag this as started
-            serverRunning = true;
-            setChanged();
-            notifyObservers("serverStarted");
 
             receivedFromServer = "";
 
@@ -118,23 +113,31 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
             br = new BufferedReader(new InputStreamReader(ps.getInputStream()));
             osw = new OutputStreamWriter(ps.getOutputStream());
 
-            serverReceiver = new MCServerReceiver(br);
-            serverReceiver.addObserver(this);
-            addObserver(serverReceiver.backgroundWork);
+            serverReceiver = new MCServerReceiver(pail);
+            timer = new java.util.Timer();
+            timer.scheduleAtFixedRate(serverReceiver, 0, 50);
+
+            // Flag this as started
+            serverRunning = true;
+            pail.serverStarted();
            
             return "SUCCESS";
         } catch (Exception e) {
             pail.guiLog("Unknown error occured while launching server.",
                     Pail.LogLevel.SEVERE);
+            if (ps != null) {
+                ps.destroy();
+            }
             return "ERROR";
         }
     }
 
+    /*
     public void update(Observable o, Object arg) {
         receivedFromServer = serverReceiver.get();
         this.setChanged();
         notifyObservers("newOutput");
-    }
+    }*/
 
     public void propertyChange(java.beans.PropertyChangeEvent evt) {
         if (evt.getNewValue().equals(false)) {
@@ -144,19 +147,14 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
             if (pail.config.getProxy()) {
                 proxyServer.stop();
             }
-            setChanged();
-            notifyObservers("serverStopped");
-            setChanged();
-            notifyObservers("pid");
+            serverReceiver.setServerRunning(false);
+            pail.serverStopped();
+            pail.pailWorker.setServerPid(pid);
         }
     }
 
     public long getPid() {
         return pid;
-    }
-
-    public String getReceived() {
-        return receivedFromServer;
     }
 
     public boolean isRunning() {
@@ -194,7 +192,7 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
     private long pid;
     private List<String> cmdLine;
     private String receivedFromServer;
-    private BufferedReader br;
+    public BufferedReader br;
     private OutputStreamWriter osw;
     private MCServerReceiver serverReceiver;
     //private Config config;
@@ -202,4 +200,5 @@ public class MCServerModel extends Observable implements Observer, java.beans.Pr
     private boolean serverRunning;
     private Pail pail;
     private ServerProperties serverProps;
+    private Timer timer;
 }

@@ -20,12 +20,14 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLDocument;
 
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
+//import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+//import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import net.miginfocom.swing.MigLayout;
+import org.dumptruckman.pail.listmodel.GUIListModel;
 import org.quartz.*;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -46,7 +48,7 @@ import static org.dumptruckman.pail.tools.TimeTools.*;
 /**
  * The application's main frame.
  */
-public class Pail extends javax.swing.JFrame implements Observer, ComponentListener {
+public class Pail extends javax.swing.JFrame implements ComponentListener {
 
     /**
     * @param args the command line arguments
@@ -70,6 +72,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         initScheduler();
 
         addComponentListener(this);
+        
 
         UIManager.put("TitledBorder.border", new BorderUIResource(new EtchedBorder()));
         try {
@@ -87,6 +90,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         backupFileSystem = new org.dumptruckman.pail.fileexplorer.FileSystemModel(".");
         // Sets model for player list
         playerListModel = new PlayerList();
+        backupFileListModel = new GUIListModel<File>();
         // Initializes the custom Button Combo Boxes
         customButtonBoxModel1 = new javax.swing.DefaultComboBoxModel();
         customButtonBoxModel1.addElement("Edit Tasks");
@@ -94,29 +98,16 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         customButtonBoxModel2.addElement("Edit Tasks");
         propagatingChecks = false;
 
-        initComponents();
-        fixComponents();
+
+
         // Pail starts unhidden, indication of that:
         isHidden = false;
-
-        // Sets a control+s hotkey for the say checkbox
-        sayCheckBox.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK),"sayOn");
-        sayCheckBox.getActionMap().put("sayOn", sayToggle);
-        // Sets shift+enter as a hotkey to reverse the say setting.
-        consoleInput.getInputMap().put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK),"sayOn");
-        consoleInput.getActionMap().put("sayOn", saySend);
-
 
         serverProperties = new ServerProperties();
 
         server = new MCServerModel(this);
         pailWorker = new PailWorker(this);
-        // @TODO
-        server.addObserver(this);
-        server.addObserver(pailWorker);
-        server.addObserver(serverProperties);
         server.setServerProps(serverProperties);
-        pailWorker.startMainWorker();
         setTitle(config.getWindowTitle());
         controlSwitcher("OFF");
 
@@ -130,11 +121,22 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         webServer = new WebInterface(this);
         schedulePaused = false;
 
+        initComponents();
         updateGuiWithConfigValues();
         updateGuiWithServerProperties();
         initSchedule();
 
         saveConfig();
+
+        pailWorker.startMainWorker();
+        
+        // Sets a control+s hotkey for the say checkbox
+        sayCheckBox.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK),"sayOn");
+        sayCheckBox.getActionMap().put("sayOn", sayToggle);
+        // Sets shift+enter as a hotkey to reverse the say setting.
+        consoleInput.getInputMap().put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK),"sayOn");
+        consoleInput.getActionMap().put("sayOn", saySend);
+
 
         if (config.web.isEnabled()) {
             startWebServer();
@@ -143,6 +145,14 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         if (config.getServerStartOnStartup()) {
             this.startServer();
         }
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                performExitSequence();
+            }
+        });
+
     }
 
     public void initScheduler() {
@@ -160,8 +170,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     public void componentResized(ComponentEvent e) {
         int width = this.getWidth();
         int height = this.getHeight();
-        //we check if either the width
-        //or the height are below minimum
+
         boolean resize = false;
         if (width < MIN_WIDTH) {
             resize = true;
@@ -198,7 +207,9 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
 
         mainPanel = new JPanel();
         tabber = new JTabbedPane();
+        //configTabber = new JTabbedPane();
         mainWindowTab = new JPanel();
+        backupFileList = new JList();
         consoleOutputPanel = new JPanel();
         consoleOutScrollPane = new JScrollPane();
         consoleOutput = new JTextPane();
@@ -310,12 +321,12 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         clearLogCheckBox = new JCheckBox();
         saveBackupControlButton = new JButton();
         backupFileChooserPanel = new JPanel();
-        jScrollPane3 = new JScrollPane();
-        backupFileChooser = new CheckboxTree();
+        backupFileListScrollPane = new JScrollPane();
+        backupAddButton = new JButton();
+        backupRemoveButton = new JButton();
         backupStatusPanel = new JPanel();
-        jScrollPane4 = new JScrollPane();
+        backupStatusLogScrollPane = new JScrollPane();
         backupStatusLog = new JTextPane();
-        backupControlRefreshButton = new JButton();
         schedulerTab = new JPanel();
         taskSchedulerPanel = new JPanel();
         taskSchedulerScrollPane = new JScrollPane();
@@ -355,15 +366,11 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         statusBarJob = new JLabel();
 
         ResourceBundle lang = ResourceBundle.getBundle("Pail");
+        versionNumber = lang.getString("Application.version");
 
         mainPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
 
-        tabber.setName("tabber"); // NOI18N
-        tabber.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                tabberStateChanged(evt);
-            }
-        });
+        tabber.setName("tabber");
         tabber.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent evt) {
                 tabberKeyTyped(evt);
@@ -623,351 +630,358 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             configurationTab.setLayout(new MigLayout("fill", "0[]0", "0[]0[]0[]0[min!]0"));
             tabber.addTab(lang.getString("configurationTab.TabConstraints.tabTitle"), configurationTab);
             {
-                serverCmdLinePanel.setBorder(BorderFactory.createTitledBorder(lang.getString("serverCmdLinePanel.border.title"))); // NOI18N
-                serverCmdLinePanel.setName("serverCmdLinePanel");
-                serverCmdLinePanel.setLayout(new MigLayout("fill", "0[min!]0[]0[min!]0", "0[]0[]0[]0[]0"));
-                configurationTab.add(serverCmdLinePanel, "grow, wrap");
+                //@TODO configTabber.setName("configTabber");
+                //configurationTab.add(configTabber, "grow");
                 {
-                    javaExecLabel.setText(lang.getString("javaExecLabel.text"));
-                    javaExecLabel.setName("javaExecLabel");
-                    serverCmdLinePanel.add(javaExecLabel, "grow 0");
+                    serverCmdLinePanel.setBorder(BorderFactory.createTitledBorder(lang.getString("serverCmdLinePanel.border.title"))); // NOI18N
+                    serverCmdLinePanel.setName("serverCmdLinePanel");
+                    serverCmdLinePanel.setLayout(new MigLayout("fill", "0[min!]0[]0[min!]0", "0[]0[]0[]0[]0"));
+                    configurationTab.add(serverCmdLinePanel, "grow, wrap");
+                    //configTabber.addTab("Server Setup", serverCmdLinePanel);
+                    {
+                        javaExecLabel.setText(lang.getString("javaExecLabel.text"));
+                        javaExecLabel.setName("javaExecLabel");
+                        serverCmdLinePanel.add(javaExecLabel, "grow 0");
 
-                    javaExecField.setText(lang.getString("javaExecField.text"));
-                    javaExecField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(javaExecField);
-                    javaExecField.setToolTipText(lang.getString("javaExecField.toolTipText"));
-                    javaExecField.setName("javaExecField");
-                    javaExecField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            javaExecFieldActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(javaExecField, "growx, growy 0");
+                        javaExecField.setText(lang.getString("javaExecField.text"));
+                        javaExecField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(javaExecField);
+                        javaExecField.setToolTipText(lang.getString("javaExecField.toolTipText"));
+                        javaExecField.setName("javaExecField");
+                        javaExecField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                javaExecFieldActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(javaExecField, "growx, growy 0");
 
-                    javaExecBrowseButton.setText(lang.getString("javaExecBrowseButton.text"));
-                    javaExecBrowseButton.putClientProperty("JComponent.sizeVariant", "mini");
-                    SwingUtilities.updateComponentTreeUI(javaExecBrowseButton);
-                    javaExecBrowseButton.setToolTipText(lang.getString("javaExecBrowseButton.toolTipText"));
-                    javaExecBrowseButton.setMargin(new Insets(2, 5, 2, 5));
-                    javaExecBrowseButton.setName("javaExecBrowseButton");
-                    javaExecBrowseButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            javaExecBrowseButtonActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(javaExecBrowseButton, "wrap, growx 0");
+                        javaExecBrowseButton.setText(lang.getString("javaExecBrowseButton.text"));
+                        javaExecBrowseButton.putClientProperty("JComponent.sizeVariant", "mini");
+                        SwingUtilities.updateComponentTreeUI(javaExecBrowseButton);
+                        javaExecBrowseButton.setToolTipText(lang.getString("javaExecBrowseButton.toolTipText"));
+                        javaExecBrowseButton.setMargin(new Insets(2, 5, 2, 5));
+                        javaExecBrowseButton.setName("javaExecBrowseButton");
+                        javaExecBrowseButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                javaExecBrowseButtonActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(javaExecBrowseButton, "wrap, growx 0");
 
-                    serverJarLabel.setText(lang.getString("serverJarLabel.text"));
-                    serverJarLabel.setName("serverJarLabel");
-                    serverCmdLinePanel.add(serverJarLabel, "growx 0");
+                        serverJarLabel.setText(lang.getString("serverJarLabel.text"));
+                        serverJarLabel.setName("serverJarLabel");
+                        serverCmdLinePanel.add(serverJarLabel, "growx 0");
 
-                    serverJarField.setText(lang.getString("serverJarField.text"));
-                    serverJarField.setName("serverJarField");
-                    serverJarField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(serverJarField);
-                    serverJarField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            serverJarFieldActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(serverJarField, "growx, split 2");
+                        serverJarField.setText(lang.getString("serverJarField.text"));
+                        serverJarField.setName("serverJarField");
+                        serverJarField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(serverJarField);
+                        serverJarField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                serverJarFieldActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(serverJarField, "growx, split 2");
 
-                    bukkitCheckBox.setText(lang.getString("bukkitCheckBox.text"));
-                    bukkitCheckBox.setName("bukkitCheckBox");
-                    bukkitCheckBox.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            bukkitCheckBoxActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(bukkitCheckBox, "growx 0");
+                        bukkitCheckBox.setText(lang.getString("bukkitCheckBox.text"));
+                        bukkitCheckBox.setName("bukkitCheckBox");
+                        bukkitCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                bukkitCheckBoxActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(bukkitCheckBox, "growx 0");
 
-                    serverJarBrowseButton.setText(lang.getString("serverJarBrowseButton.text"));
-                    serverJarBrowseButton.setToolTipText(lang.getString("serverJarBrowseButton.toolTipText"));
-                    serverJarBrowseButton.putClientProperty("JComponent.sizeVariant", "mini");
-                    SwingUtilities.updateComponentTreeUI(serverJarBrowseButton);
-                    serverJarBrowseButton.setMargin(new Insets(2, 5, 2, 5));
-                    serverJarBrowseButton.setName("serverJarBrowseButton");
-                    serverJarBrowseButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            serverJarBrowseButtonActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(serverJarBrowseButton, "growx 0, wrap");
+                        serverJarBrowseButton.setText(lang.getString("serverJarBrowseButton.text"));
+                        serverJarBrowseButton.setToolTipText(lang.getString("serverJarBrowseButton.toolTipText"));
+                        serverJarBrowseButton.putClientProperty("JComponent.sizeVariant", "mini");
+                        SwingUtilities.updateComponentTreeUI(serverJarBrowseButton);
+                        serverJarBrowseButton.setMargin(new Insets(2, 5, 2, 5));
+                        serverJarBrowseButton.setName("serverJarBrowseButton");
+                        serverJarBrowseButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                serverJarBrowseButtonActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(serverJarBrowseButton, "growx 0, wrap");
 
-                    xmxMemoryLabel.setText(lang.getString("xmxMemoryLabel.text"));
-                    xmxMemoryLabel.setName("xmxMemoryLabel");
-                    serverCmdLinePanel.add(xmxMemoryLabel, "span 3, split 5");
+                        xmxMemoryLabel.setText(lang.getString("xmxMemoryLabel.text"));
+                        xmxMemoryLabel.setName("xmxMemoryLabel");
+                        serverCmdLinePanel.add(xmxMemoryLabel, "span 3, split 5");
 
-                    xmxMemoryField.setText(lang.getString("xmxMemoryField.text"));
-                    xmxMemoryField.setToolTipText(lang.getString("xmxMemoryField.toolTipText"));
-                    xmxMemoryField.setName("xmxMemoryField");
-                    xmxMemoryField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(xmxMemoryField);
-                    xmxMemoryField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            xmxMemoryFieldActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(xmxMemoryField, "growx 10");
+                        xmxMemoryField.setText(lang.getString("xmxMemoryField.text"));
+                        xmxMemoryField.setToolTipText(lang.getString("xmxMemoryField.toolTipText"));
+                        xmxMemoryField.setName("xmxMemoryField");
+                        xmxMemoryField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(xmxMemoryField);
+                        xmxMemoryField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                xmxMemoryFieldActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(xmxMemoryField, "growx 10");
 
-                    xincgcCheckBox.setText(lang.getString("xincgcCheckBox.text"));
-                    xincgcCheckBox.setToolTipText(lang.getString("xincgcCheckBox.toolTipText"));
-                    xincgcCheckBox.setName("xincgcCheckBox");
-                    xincgcCheckBox.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            xincgcCheckBoxActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(xincgcCheckBox, "growx 0");
+                        xincgcCheckBox.setText(lang.getString("xincgcCheckBox.text"));
+                        xincgcCheckBox.setToolTipText(lang.getString("xincgcCheckBox.toolTipText"));
+                        xincgcCheckBox.setName("xincgcCheckBox");
+                        xincgcCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                xincgcCheckBoxActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(xincgcCheckBox, "growx 0");
 
-                    extraArgsLabel.setText(lang.getString("extraArgsLabel.text"));
-                    extraArgsLabel.setName("extraArgsLabel");
-                    serverCmdLinePanel.add(extraArgsLabel, "gapleft 20, growx 0");
+                        extraArgsLabel.setText(lang.getString("extraArgsLabel.text"));
+                        extraArgsLabel.setName("extraArgsLabel");
+                        serverCmdLinePanel.add(extraArgsLabel, "gapleft 20, growx 0");
 
-                    extraArgsField.setText(lang.getString("extraArgsField.text"));
-                    extraArgsField.setToolTipText(lang.getString("extraArgsField.toolTipText"));
-                    extraArgsField.setName("extraArgsField");
-                    extraArgsField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(extraArgsField);
-                    extraArgsField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            extraArgsFieldActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(extraArgsField, "growx, wrap");
+                        extraArgsField.setText(lang.getString("extraArgsField.text"));
+                        extraArgsField.setToolTipText(lang.getString("extraArgsField.toolTipText"));
+                        extraArgsField.setName("extraArgsField");
+                        extraArgsField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(extraArgsField);
+                        extraArgsField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                extraArgsFieldActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(extraArgsField, "growx, wrap");
 
-                    customCommandLineLabel.setText(lang.getString("customCommandLineLabel.text"));
-                    customCommandLineLabel.setName("customCommandLineLabel");
-                    serverCmdLinePanel.add(customCommandLineLabel, "growx 0, span 3, split 3");
+                        customCommandLineLabel.setText(lang.getString("customCommandLineLabel.text"));
+                        customCommandLineLabel.setName("customCommandLineLabel");
+                        serverCmdLinePanel.add(customCommandLineLabel, "growx 0, span 3, split 3");
 
-                    cmdLineField.setEditable(false);
-                    cmdLineField.setText(lang.getString("cmdLineField.text"));
-                    cmdLineField.setToolTipText(lang.getString("cmdLineField.toolTipText"));
-                    cmdLineField.setName("cmdLineField");
-                    cmdLineField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(cmdLineField);
-                    cmdLineField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            cmdLineFieldActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(cmdLineField, "growx");
+                        cmdLineField.setEditable(false);
+                        cmdLineField.setText(lang.getString("cmdLineField.text"));
+                        cmdLineField.setToolTipText(lang.getString("cmdLineField.toolTipText"));
+                        cmdLineField.setName("cmdLineField");
+                        cmdLineField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(cmdLineField);
+                        cmdLineField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                cmdLineFieldActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(cmdLineField, "growx");
 
-                    customLaunchCheckBox.setText(lang.getString("customLaunchCheckBox.text"));
-                    customLaunchCheckBox.setToolTipText(lang.getString("customLaunchCheckBox.toolTipText"));
-                    customLaunchCheckBox.setName("customLaunchCheckBox");
-                    customLaunchCheckBox.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            customLaunchCheckBoxActionPerformed(evt);
-                        }
-                    });
-                    serverCmdLinePanel.add(customLaunchCheckBox, "growx 0");
+                        customLaunchCheckBox.setText(lang.getString("customLaunchCheckBox.text"));
+                        customLaunchCheckBox.setToolTipText(lang.getString("customLaunchCheckBox.toolTipText"));
+                        customLaunchCheckBox.setName("customLaunchCheckBox");
+                        customLaunchCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                customLaunchCheckBoxActionPerformed(evt);
+                            }
+                        });
+                        serverCmdLinePanel.add(customLaunchCheckBox, "growx 0");
+                    }
+
+                    serverPropertiesPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("serverPropertiesPanel.border.title"))); // NOI18N
+                    serverPropertiesPanel.setName("serverPropertiesPanel");
+                    serverPropertiesPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0[]0"));
+                    configurationTab.add(serverPropertiesPanel, "grow, wrap");
+                    //configTabber.addTab("Server Properties", serverPropertiesPanel);
+                    {
+                        allowFlightCheckBox.setText(lang.getString("allowFlightCheckBox.text"));
+                        allowFlightCheckBox.setName("allowFlightCheckBox");
+                        serverPropertiesPanel.add(allowFlightCheckBox, "growx, split 5");
+
+                        allowNetherCheckBox.setSelected(true);
+                        allowNetherCheckBox.setText(lang.getString("allowNetherCheckBox.text"));
+                        allowNetherCheckBox.setName("allowNetherCheckBox");
+                        serverPropertiesPanel.add(allowNetherCheckBox, "growx");
+
+                        onlineModeCheckBox.setSelected(true);
+                        onlineModeCheckBox.setText(lang.getString("onlineModeCheckBox.text"));
+                        onlineModeCheckBox.setName("onlineModeCheckBox");
+                        serverPropertiesPanel.add(onlineModeCheckBox, "growx");
+
+                        pvpCheckBox.setSelected(true);
+                        pvpCheckBox.setText(lang.getString("pvpCheckBox.text"));
+                        pvpCheckBox.setName("pvpCheckBox");
+                        serverPropertiesPanel.add(pvpCheckBox, "growx");
+
+                        whiteListCheckBox.setText(lang.getString("whiteListCheckBox.text"));
+                        whiteListCheckBox.setName("whiteListCheckBox");
+                        serverPropertiesPanel.add(whiteListCheckBox, "growx, wrap");
+
+                        spawnProtectionLabel.setText(lang.getString("spawnProtectionLabel.text"));
+                        spawnProtectionLabel.setName("spawnProtectionLabel");
+                        serverPropertiesPanel.add(spawnProtectionLabel, "growx 0, split 6");
+
+                        spawnProtectionField.setText(lang.getString("spawnProtectionField.text"));
+                        spawnProtectionField.setName("spawnProtectionField");
+                        spawnProtectionField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(spawnProtectionField);
+                        serverPropertiesPanel.add(spawnProtectionField, "growx");
+
+                        viewDistanceLabel.setText(lang.getString("viewDistanceLabel.text"));
+                        viewDistanceLabel.setName("viewDistanceLabel");
+                        serverPropertiesPanel.add(viewDistanceLabel, "growx 0");
+
+                        viewDistanceSpinner.setModel(new SpinnerNumberModel(10, 3, 15, 1));
+                        viewDistanceSpinner.setName("viewDistanceSpinner");
+                        viewDistanceSpinner.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(viewDistanceSpinner);
+                        serverPropertiesPanel.add(viewDistanceSpinner, "growx");
+
+                        maxPlayersLabel.setText(lang.getString("maxPlayersLabel.text"));
+                        maxPlayersLabel.setName("maxPlayersLabel");
+                        serverPropertiesPanel.add(maxPlayersLabel, "growx 0");
+
+                        maxPlayersSpinner.setModel(new SpinnerNumberModel(20, 0, 100, 1));
+                        maxPlayersSpinner.setName("maxPlayersSpinner");
+                        maxPlayersSpinner.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(maxPlayersSpinner);
+                        serverPropertiesPanel.add(maxPlayersSpinner, "growx 10, wrap");
+
+                        serverIpLabel.setText(lang.getString("serverIpLabel.text"));
+                        serverIpLabel.setName("serverIpLabel");
+                        serverPropertiesPanel.add(serverIpLabel, "growx 0, split 6");
+
+                        serverIpField.setText(lang.getString("serverIpField.text"));
+                        serverIpField.setName("serverIpField");
+                        serverIpField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(serverIpField);
+                        serverPropertiesPanel.add(serverIpField, "growx 100");
+
+                        serverPortLabel.setLabelFor(serverPortField);
+                        serverPortLabel.setText(lang.getString("serverPortLabel.text"));
+                        serverPortLabel.setName("serverPortLabel");
+                        serverPropertiesPanel.add(serverPortLabel, "growx 0");
+
+                        serverPortField.setText(lang.getString("serverPortField.text"));
+                        serverPortField.setToolTipText(lang.getString("serverPortField.toolTipText"));
+                        serverPortField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(serverPortField);
+                        serverPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
+                        serverPortField.setName("serverPortField");
+                        serverPropertiesPanel.add(serverPortField, "growx 20");
+
+                        spawnAnimalsCheckBox.setSelected(true);
+                        spawnAnimalsCheckBox.setText(lang.getString("spawnAnimalsCheckBox.text"));
+                        spawnAnimalsCheckBox.setName("spawnAnimalsCheckBox");
+                        serverPropertiesPanel.add(spawnAnimalsCheckBox);
+
+                        spawnMonstersCheckBox.setSelected(true);
+                        spawnMonstersCheckBox.setText(lang.getString("spawnMonstersCheckBox.text"));
+                        spawnMonstersCheckBox.setName("spawnMonstersCheckBox");
+                        serverPropertiesPanel.add(spawnMonstersCheckBox, "wrap");
+
+                        levelNameLabel.setText(lang.getString("levelNameLabel.text"));
+                        levelNameLabel.setName("levelNameLabel");
+                        serverPropertiesPanel.add(levelNameLabel, "growx 0, split 4");
+
+                        levelNameField.setText(lang.getString("levelNameField.text"));
+                        levelNameField.setName("levelNameField");
+                        levelNameField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(levelNameField);
+                        serverPropertiesPanel.add(levelNameField, "growx 40");
+
+                        levelSeedLabel.setText(lang.getString("levelSeedLabel.text"));
+                        levelSeedLabel.setName("levelSeedLabel");
+                        serverPropertiesPanel.add(levelSeedLabel, "growx 0");
+
+                        levelSeedField.setText(lang.getString("levelSeedField.text"));
+                        levelSeedField.setName("levelSeedField");
+                        levelSeedField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(levelSeedField);
+                        serverPropertiesPanel.add(levelSeedField, "growx 100");
+                    }
+
+                    guiConfigPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("guiConfigPanel.border.title")));
+                    guiConfigPanel.setName("guiConfigPanel");
+                    guiConfigPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
+                    configurationTab.add(guiConfigPanel, "grow, wrap");
+                    //configTabber.addTab("GUI Settings", guiConfigPanel);
+                    {
+                        useProxyCheckBox.setText(lang.getString("useProxyCheckBox.text"));
+                        useProxyCheckBox.setToolTipText(lang.getString("useProxyCheckBox.toolTipText"));
+                        useProxyCheckBox.setName("useProxyCheckBox");
+                        useProxyCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                useProxyCheckBoxActionPerformed(evt);
+                            }
+                        });
+                        guiConfigPanel.add(useProxyCheckBox, "growx 0, split 5");
+
+                        extPortLabel.setLabelFor(extPortField);
+                        extPortLabel.setText(lang.getString("extPortLabel.text"));
+                        extPortLabel.setName("extPortLabel");
+                        guiConfigPanel.add(extPortLabel, "gapleft 20, growx 0");
+
+                        extPortField.setText(lang.getString("extPortField.text"));
+                        extPortField.setToolTipText(lang.getString("extPortField.toolTipText"));
+                        extPortField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(extPortField);
+                        extPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
+                        extPortField.setName("extPortField");
+                        guiConfigPanel.add(extPortField, "growx 100");
+
+                        intPortLabel.setLabelFor(intPortField);
+                        intPortLabel.setText(lang.getString("intPortLabel.text"));
+                        intPortLabel.setName("intPortLabel");
+                        guiConfigPanel.add(intPortLabel, "growx 0");
+
+                        intPortField.setText(lang.getString("intPortField.text"));
+                        intPortField.setToolTipText(lang.getString("intPortField.toolTipText"));
+                        intPortField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(intPortField);
+                        intPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
+                        intPortField.setName("intPortField");
+                        guiConfigPanel.add(intPortField, "growx 100, wrap");
+
+                        windowTitleLabel.setText(lang.getString("windowTitleLabel.text"));
+                        windowTitleLabel.setName("windowTitleLabel");
+                        guiConfigPanel.add(windowTitleLabel, "growx 0, split 4");
+
+                        windowTitleField.setText(lang.getString("windowTitleField.text"));
+                        windowTitleField.setName("windowTitleField");
+                        windowTitleField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(windowTitleField);
+                        windowTitleField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                windowTitleFieldActionPerformed(evt);
+                            }
+                        });
+                        guiConfigPanel.add(windowTitleField, "growx");
+
+                        inputHistoryMaxSizeLabel.setText(lang.getString("inputHistoryMaxSizeLabel.text"));
+                        inputHistoryMaxSizeLabel.setName("inputHistoryMaxSizeLabel");
+                        guiConfigPanel.add(inputHistoryMaxSizeLabel, "growx 0");
+
+                        inputHistoryMaxSizeField.setText(lang.getString("inputHistoryMaxSizeField.text"));
+                        inputHistoryMaxSizeField.setToolTipText(lang.getString("inputHistoryMaxSizeField.toolTipText"));
+                        inputHistoryMaxSizeField.setInputVerifier(new RegexVerifier("\\d{1,4}"));
+                        inputHistoryMaxSizeField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(inputHistoryMaxSizeField);
+                        inputHistoryMaxSizeField.setName("inputHistoryMaxSizeField");
+                        guiConfigPanel.add(inputHistoryMaxSizeField, "growx, wrap");
+
+                        startServerOnLaunchCheckBox.setText(lang.getString("startServerOnLaunchCheckBox.text"));
+                        startServerOnLaunchCheckBox.setName("startServerOnLaunchCheckBox");
+                        startServerOnLaunchCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                startServerOnLaunchCheckBoxActionPerformed(evt);
+                            }
+                        });
+                        guiConfigPanel.add(startServerOnLaunchCheckBox, "growx 0, split 3");
+
+                        commandPrefixLabel.setText(lang.getString("commandPrefixLabel.text"));
+                        commandPrefixLabel.setName("commandPrefixLabel");
+                        guiConfigPanel.add(commandPrefixLabel, "gapleft 20, growx 0");
+
+                        commandPrefixField.setText(lang.getString("commandPrefixField.text"));
+                        commandPrefixField.setToolTipText(lang.getString("commandPrefixField.toolTipText"));
+                        commandPrefixField.setName("commandPrefixField");
+                        commandPrefixField.putClientProperty("JComponent.sizeVariant", "small");
+                        SwingUtilities.updateComponentTreeUI(commandPrefixField);
+                        commandPrefixField.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                commandPrefixFieldActionPerformed(evt);
+                            }
+                        });
+                        guiConfigPanel.add(commandPrefixField, "growx");
                 }
-
-                serverPropertiesPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("serverPropertiesPanel.border.title"))); // NOI18N
-                serverPropertiesPanel.setName("serverPropertiesPanel");
-                serverPropertiesPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0[]0"));
-                configurationTab.add(serverPropertiesPanel, "grow, wrap");
-                {
-                    allowFlightCheckBox.setText(lang.getString("allowFlightCheckBox.text"));
-                    allowFlightCheckBox.setName("allowFlightCheckBox");
-                    serverPropertiesPanel.add(allowFlightCheckBox, "growx, split 5");
-
-                    allowNetherCheckBox.setSelected(true);
-                    allowNetherCheckBox.setText(lang.getString("allowNetherCheckBox.text"));
-                    allowNetherCheckBox.setName("allowNetherCheckBox");
-                    serverPropertiesPanel.add(allowNetherCheckBox, "growx");
-
-                    onlineModeCheckBox.setSelected(true);
-                    onlineModeCheckBox.setText(lang.getString("onlineModeCheckBox.text"));
-                    onlineModeCheckBox.setName("onlineModeCheckBox");
-                    serverPropertiesPanel.add(onlineModeCheckBox, "growx");
-
-                    pvpCheckBox.setSelected(true);
-                    pvpCheckBox.setText(lang.getString("pvpCheckBox.text"));
-                    pvpCheckBox.setName("pvpCheckBox");
-                    serverPropertiesPanel.add(pvpCheckBox, "growx");
-
-                    whiteListCheckBox.setText(lang.getString("whiteListCheckBox.text"));
-                    whiteListCheckBox.setName("whiteListCheckBox");
-                    serverPropertiesPanel.add(whiteListCheckBox, "growx, wrap");
-
-                    spawnProtectionLabel.setText(lang.getString("spawnProtectionLabel.text"));
-                    spawnProtectionLabel.setName("spawnProtectionLabel");
-                    serverPropertiesPanel.add(spawnProtectionLabel, "growx 0, split 6");
-
-                    spawnProtectionField.setText(lang.getString("spawnProtectionField.text"));
-                    spawnProtectionField.setName("spawnProtectionField");
-                    spawnProtectionField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(spawnProtectionField);
-                    serverPropertiesPanel.add(spawnProtectionField, "growx");
-
-                    viewDistanceLabel.setText(lang.getString("viewDistanceLabel.text"));
-                    viewDistanceLabel.setName("viewDistanceLabel");
-                    serverPropertiesPanel.add(viewDistanceLabel, "growx 0");
-
-                    viewDistanceSpinner.setModel(new SpinnerNumberModel(10, 3, 15, 1));
-                    viewDistanceSpinner.setName("viewDistanceSpinner");
-                    viewDistanceSpinner.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(viewDistanceSpinner);
-                    serverPropertiesPanel.add(viewDistanceSpinner, "growx");
-
-                    maxPlayersLabel.setText(lang.getString("maxPlayersLabel.text"));
-                    maxPlayersLabel.setName("maxPlayersLabel");
-                    serverPropertiesPanel.add(maxPlayersLabel, "growx 0");
-
-                    maxPlayersSpinner.setModel(new SpinnerNumberModel(20, 0, 100, 1));
-                    maxPlayersSpinner.setName("maxPlayersSpinner");
-                    maxPlayersSpinner.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(maxPlayersSpinner);
-                    serverPropertiesPanel.add(maxPlayersSpinner, "growx 10, wrap");
-
-                    serverIpLabel.setText(lang.getString("serverIpLabel.text"));
-                    serverIpLabel.setName("serverIpLabel");
-                    serverPropertiesPanel.add(serverIpLabel, "growx 0, split 6");
-
-                    serverIpField.setText(lang.getString("serverIpField.text"));
-                    serverIpField.setName("serverIpField");
-                    serverIpField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(serverIpField);
-                    serverPropertiesPanel.add(serverIpField, "growx 100");
-
-                    serverPortLabel.setLabelFor(serverPortField);
-                    serverPortLabel.setText(lang.getString("serverPortLabel.text"));
-                    serverPortLabel.setName("serverPortLabel");
-                    serverPropertiesPanel.add(serverPortLabel, "growx 0");
-
-                    serverPortField.setText(lang.getString("serverPortField.text"));
-                    serverPortField.setToolTipText(lang.getString("serverPortField.toolTipText"));
-                    serverPortField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(serverPortField);
-                    serverPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
-                    serverPortField.setName("serverPortField");
-                    serverPropertiesPanel.add(serverPortField, "growx 20");
-
-                    spawnAnimalsCheckBox.setSelected(true);
-                    spawnAnimalsCheckBox.setText(lang.getString("spawnAnimalsCheckBox.text"));
-                    spawnAnimalsCheckBox.setName("spawnAnimalsCheckBox");
-                    serverPropertiesPanel.add(spawnAnimalsCheckBox);
-
-                    spawnMonstersCheckBox.setSelected(true);
-                    spawnMonstersCheckBox.setText(lang.getString("spawnMonstersCheckBox.text"));
-                    spawnMonstersCheckBox.setName("spawnMonstersCheckBox");
-                    serverPropertiesPanel.add(spawnMonstersCheckBox, "wrap");
-
-                    levelNameLabel.setText(lang.getString("levelNameLabel.text"));
-                    levelNameLabel.setName("levelNameLabel");
-                    serverPropertiesPanel.add(levelNameLabel, "growx 0, split 4");
-
-                    levelNameField.setText(lang.getString("levelNameField.text"));
-                    levelNameField.setName("levelNameField");
-                    levelNameField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(levelNameField);
-                    serverPropertiesPanel.add(levelNameField, "growx 40");
-
-                    levelSeedLabel.setText(lang.getString("levelSeedLabel.text"));
-                    levelSeedLabel.setName("levelSeedLabel");
-                    serverPropertiesPanel.add(levelSeedLabel, "growx 0");
-
-                    levelSeedField.setText(lang.getString("levelSeedField.text"));
-                    levelSeedField.setName("levelSeedField");
-                    levelSeedField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(levelSeedField);
-                    serverPropertiesPanel.add(levelSeedField, "growx 100");
-                }
-
-                guiConfigPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("guiConfigPanel.border.title")));
-                guiConfigPanel.setName("guiConfigPanel");
-                guiConfigPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
-                configurationTab.add(guiConfigPanel, "grow, wrap");
-                {
-                    useProxyCheckBox.setText(lang.getString("useProxyCheckBox.text"));
-                    useProxyCheckBox.setToolTipText(lang.getString("useProxyCheckBox.toolTipText"));
-                    useProxyCheckBox.setName("useProxyCheckBox");
-                    useProxyCheckBox.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            useProxyCheckBoxActionPerformed(evt);
-                        }
-                    });
-                    guiConfigPanel.add(useProxyCheckBox, "growx 0, split 5");
-
-                    extPortLabel.setLabelFor(extPortField);
-                    extPortLabel.setText(lang.getString("extPortLabel.text"));
-                    extPortLabel.setName("extPortLabel");
-                    guiConfigPanel.add(extPortLabel, "gapleft 20, growx 0");
-
-                    extPortField.setText(lang.getString("extPortField.text"));
-                    extPortField.setToolTipText(lang.getString("extPortField.toolTipText"));
-                    extPortField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(extPortField);
-                    extPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
-                    extPortField.setName("extPortField");
-                    guiConfigPanel.add(extPortField, "growx 100");
-
-                    intPortLabel.setLabelFor(intPortField);
-                    intPortLabel.setText(lang.getString("intPortLabel.text"));
-                    intPortLabel.setName("intPortLabel");
-                    guiConfigPanel.add(intPortLabel, "growx 0");
-
-                    intPortField.setText(lang.getString("intPortField.text"));
-                    intPortField.setToolTipText(lang.getString("intPortField.toolTipText"));
-                    intPortField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(intPortField);
-                    intPortField.setInputVerifier(new RegexVerifier("^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)$"));
-                    intPortField.setName("intPortField");
-                    guiConfigPanel.add(intPortField, "growx 100, wrap");
-
-                    windowTitleLabel.setText(lang.getString("windowTitleLabel.text"));
-                    windowTitleLabel.setName("windowTitleLabel");
-                    guiConfigPanel.add(windowTitleLabel, "growx 0, split 4");
-
-                    windowTitleField.setText(lang.getString("windowTitleField.text"));
-                    windowTitleField.setName("windowTitleField");
-                    windowTitleField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(windowTitleField);
-                    windowTitleField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            windowTitleFieldActionPerformed(evt);
-                        }
-                    });
-                    guiConfigPanel.add(windowTitleField, "growx");
-
-                    inputHistoryMaxSizeLabel.setText(lang.getString("inputHistoryMaxSizeLabel.text"));
-                    inputHistoryMaxSizeLabel.setName("inputHistoryMaxSizeLabel");
-                    guiConfigPanel.add(inputHistoryMaxSizeLabel, "growx 0");
-
-                    inputHistoryMaxSizeField.setText(lang.getString("inputHistoryMaxSizeField.text"));
-                    inputHistoryMaxSizeField.setToolTipText(lang.getString("inputHistoryMaxSizeField.toolTipText"));
-                    inputHistoryMaxSizeField.setInputVerifier(new RegexVerifier("\\d{1,4}"));
-                    inputHistoryMaxSizeField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(inputHistoryMaxSizeField);
-                    inputHistoryMaxSizeField.setName("inputHistoryMaxSizeField");
-                    guiConfigPanel.add(inputHistoryMaxSizeField, "growx, wrap");
-
-                    startServerOnLaunchCheckBox.setText(lang.getString("startServerOnLaunchCheckBox.text"));
-                    startServerOnLaunchCheckBox.setName("startServerOnLaunchCheckBox");
-                    startServerOnLaunchCheckBox.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            startServerOnLaunchCheckBoxActionPerformed(evt);
-                        }
-                    });
-                    guiConfigPanel.add(startServerOnLaunchCheckBox, "growx 0, split 3");
-
-                    commandPrefixLabel.setText(lang.getString("commandPrefixLabel.text"));
-                    commandPrefixLabel.setName("commandPrefixLabel");
-                    guiConfigPanel.add(commandPrefixLabel, "gapleft 20, growx 0");
-
-                    commandPrefixField.setText(lang.getString("commandPrefixField.text"));
-                    commandPrefixField.setToolTipText(lang.getString("commandPrefixField.toolTipText"));
-                    commandPrefixField.setName("commandPrefixField");
-                    commandPrefixField.putClientProperty("JComponent.sizeVariant", "small");
-                    SwingUtilities.updateComponentTreeUI(commandPrefixField);
-                    commandPrefixField.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                            commandPrefixFieldActionPerformed(evt);
-                        }
-                    });
-                    guiConfigPanel.add(commandPrefixField, "growx");
                 }
 
                 saveServerConfigButton.setText(lang.getString("saveServerConfigButton.text"));
@@ -982,11 +996,125 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             }
 
             backupTab.setName("backupTab");
-            backupTab.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
+            backupTab.setLayout(new MigLayout("fill", "0[70%]0[30%]0", "0[min!]0[]0[min!]0"));
             tabber.addTab(lang.getString("backupTab.TabConstraints.tabTitle"), backupTab);
             {
-                //@TODO
-                
+                backupSettingsPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupSettingsPanel.border.title")));
+                backupSettingsPanel.setName("backupSettingsPanel");
+                backupSettingsPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
+                backupTab.add(backupSettingsPanel, "grow");
+                {
+                    backupPathLabel.setText(lang.getString("backupPathLabel.text"));
+                    backupPathLabel.setName("backupPathLabel");
+                    backupSettingsPanel.add(backupPathLabel, "growx 0, split 3");
+
+                    backupPathField.setText(lang.getString("backupPathField.text"));
+                    backupPathField.setName("backupPathField");
+                    backupPathField.putClientProperty("JComponent.sizeVariant", "small");
+                    SwingUtilities.updateComponentTreeUI(backupPathField);
+                    backupPathField.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            backupPathFieldActionPerformed(evt);
+                        }
+                    });
+                    backupSettingsPanel.add(backupPathField, "growx");
+
+                    backupPathBrowseButton.setText(lang.getString("backupPathBrowseButton.text"));
+                    backupPathBrowseButton.setMargin(new Insets(2, 5, 2, 5));
+                    backupPathBrowseButton.setName("backupPathBrowseButton");
+                    backupPathBrowseButton.putClientProperty("JComponent.sizeVariant", "mini");
+                    SwingUtilities.updateComponentTreeUI(backupPathBrowseButton);
+                    backupPathBrowseButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            backupPathBrowseButtonActionPerformed(evt);
+                        }
+                    });
+                    backupSettingsPanel.add(backupPathBrowseButton, "growx 0, wrap");
+
+                    zipBackupCheckBox.setText(lang.getString("zipBackupCheckBox.text")); // NOI18N
+                    zipBackupCheckBox.setName("zipBackupCheckBox"); // NOI18N
+                    zipBackupCheckBox.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            zipBackupCheckBoxActionPerformed(evt);
+                        }
+                    });
+                    backupSettingsPanel.add(zipBackupCheckBox, "growx 0, split 2");
+
+                    clearLogCheckBox.setText(lang.getString("clearLogCheckBox.text")); // NOI18N
+                    clearLogCheckBox.setToolTipText(lang.getString("clearLogCheckBox.toolTipText")); // NOI18N
+                    clearLogCheckBox.setName("clearLogCheckBox"); // NOI18N
+                    clearLogCheckBox.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            clearLogCheckBoxActionPerformed(evt);
+                        }
+                    });
+                    backupSettingsPanel.add(clearLogCheckBox, "gapleft 20, growx 0");
+                }
+
+                backupStatusPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupStatusPanel.border.title")));
+                backupStatusPanel.setName("backupStatusPanel");
+                backupStatusPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0"));
+                backupTab.add(backupStatusPanel, "grow, span 1 3, wrap");
+                {
+                    backupStatusLog.setEditable(false);
+                    backupStatusLog.setName("backupStatusLog");
+                    backupStatusLogScrollPane.setName("backupStatusLogScrollPane");
+                    backupStatusLogScrollPane.setViewportView(backupStatusLog);
+                    backupStatusPanel.add(backupStatusLogScrollPane, "grow");
+                }
+
+                backupFileChooserPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupFileChooserPanel.border.title"))); // NOI18N
+                backupFileChooserPanel.setName("backupFileChooserPanel");
+                backupFileChooserPanel.setLayout(new MigLayout("fill", "0[]0", "0[]0[min!]0[min!]0"));
+                backupTab.add(backupFileChooserPanel, "grow, wrap");
+                {
+                    backupFileList.setName("backupFileList");
+                    backupFileList.setModel(backupFileListModel);
+                    backupFileListScrollPane.setName("backupFileListScrollPane");
+                    backupFileListScrollPane.setViewportView(backupFileList);
+                    backupFileChooserPanel.add(backupFileListScrollPane, "grow, wrap");
+
+                    backupAddButton.setText(lang.getString("backupAddButton.text"));
+                    backupAddButton.setMargin(new Insets(2, 5, 2, 5));
+                    backupAddButton.setName("backupAddButton");
+                    backupAddButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            backupAddButtonActionPerformed(evt);
+                        }
+                    });
+                    backupFileChooserPanel.add(backupAddButton, "growx, split 2");
+
+                    backupRemoveButton.setText(lang.getString("backupRemoveButton.text"));
+                    backupRemoveButton.setMargin(new Insets(2, 5, 2, 5));
+                    backupRemoveButton.setName("backupRemoveButton");
+                    backupRemoveButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            backupRemoveButtonActionPerformed(evt);
+                        }
+                    });
+                    backupFileChooserPanel.add(backupRemoveButton, "gapleft 40, growx, wrap");
+
+                    backupButton.setText(lang.getString("backupButton.text"));
+                    backupButton.setMargin(new Insets(2, 5, 2, 5));
+                    backupButton.setName("backupButton");
+                    backupButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            backupButtonActionPerformed(evt);
+                        }
+                    });
+                    backupFileChooserPanel.add(backupButton, "growx");
+                }
+
+                saveBackupControlButton.setText(lang.getString("saveBackupControlButton.text"));
+                saveBackupControlButton.setMargin(new Insets(2, 5, 2, 5));
+                saveBackupControlButton.setName("saveBackupControlButton");
+                saveBackupControlButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        saveBackupControlButtonActionPerformed(evt);
+                    }
+                });
+                backupTab.add(saveBackupControlButton, "growx");
+
             }
 
             schedulerTab.setName("schedulerTab");
@@ -1282,110 +1410,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
 
 
 
-        backupButton.setText(lang.getString("backupButton.text"));
-        backupButton.setMargin(new Insets(2, 5, 2, 5));
-        backupButton.setName("backupButton");
-        backupButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                backupButtonActionPerformed(evt);
-            }
-        });
 
-        backupSettingsPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupSettingsPanel.border.title"))); // NOI18N
-        backupSettingsPanel.setName("backupSettingsPanel"); // NOI18N
-
-        backupPathLabel.setText(lang.getString("backupPathLabel.text")); // NOI18N
-        backupPathLabel.setName("backupPathLabel"); // NOI18N
-
-        backupPathField.setText(lang.getString("backupPathField.text")); // NOI18N
-        backupPathField.setName("backupPathField"); // NOI18N
-        backupPathField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                backupPathFieldActionPerformed(evt);
-            }
-        });
-
-        backupPathBrowseButton.setText(lang.getString("backupPathBrowseButton.text")); // NOI18N
-        backupPathBrowseButton.setMargin(new Insets(2, 5, 2, 5));
-        backupPathBrowseButton.setName("backupPathBrowseButton"); // NOI18N
-        backupPathBrowseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                backupPathBrowseButtonActionPerformed(evt);
-            }
-        });
-
-        zipBackupCheckBox.setText(lang.getString("zipBackupCheckBox.text")); // NOI18N
-        zipBackupCheckBox.setName("zipBackupCheckBox"); // NOI18N
-        zipBackupCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                zipBackupCheckBoxActionPerformed(evt);
-            }
-        });
-
-        clearLogCheckBox.setText(lang.getString("clearLogCheckBox.text")); // NOI18N
-        clearLogCheckBox.setToolTipText(lang.getString("clearLogCheckBox.toolTipText")); // NOI18N
-        clearLogCheckBox.setName("clearLogCheckBox"); // NOI18N
-        clearLogCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                clearLogCheckBoxActionPerformed(evt);
-            }
-        });
-
-        saveBackupControlButton.setText(lang.getString("saveBackupControlButton.text")); // NOI18N
-        saveBackupControlButton.setMargin(new Insets(2, 5, 2, 5));
-        saveBackupControlButton.setName("saveBackupControlButton"); // NOI18N
-        saveBackupControlButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                saveBackupControlButtonActionPerformed(evt);
-            }
-        });
-
-        backupFileChooserPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupFileChooserPanel.border.title"))); // NOI18N
-        backupFileChooserPanel.setName("backupFileChooserPanel"); // NOI18N
-
-        jScrollPane3.setName("jScrollPane3"); // NOI18N
-
-        backupFileChooser.setModel(backupFileSystem);
-        backupFileChooser.setToolTipText(lang.getString("backupFileChooser.toolTipText")); // NOI18N
-        backupFileChooser.setName("backupFileChooser"); // NOI18N
-        backupFileChooser.setToggleClickCount(3);
-        backupFileChooser.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                backupFileChooserMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(backupFileChooser);
-
-        GroupLayout backupFileChooserPanelLayout = new GroupLayout(backupFileChooserPanel);
-        backupFileChooserPanel.setLayout(backupFileChooserPanelLayout);
-        backupFileChooserPanelLayout.setHorizontalGroup(
-            backupFileChooserPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-        );
-        backupFileChooserPanelLayout.setVerticalGroup(
-            backupFileChooserPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-        );
-
-        backupStatusPanel.setBorder(BorderFactory.createTitledBorder(lang.getString("backupStatusPanel.border.title"))); // NOI18N
-        backupStatusPanel.setName("backupStatusPanel"); // NOI18N
-
-        jScrollPane4.setName("jScrollPane4"); // NOI18N
-
-        backupStatusLog.setEditable(false);
-        backupStatusLog.setName("backupStatusLog"); // NOI18N
-        jScrollPane4.setViewportView(backupStatusLog);
-
-
-
-        backupControlRefreshButton.setText(lang.getString("backupControlRefreshButton.text")); // NOI18N
-        backupControlRefreshButton.setMargin(new Insets(2, 5, 2, 5));
-        backupControlRefreshButton.setName("backupControlRefreshButton"); // NOI18N
-        backupControlRefreshButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                backupControlRefreshButtonActionPerformed(evt);
-            }
-        });
 
 
 
@@ -1398,9 +1423,13 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         fileMenu.setText(lang.getString("fileMenu.text"));
         fileMenu.setName("fileMenu");
 
-
+        exitMenuItem.setText(lang.getString("exitMenuItem.text"));
         exitMenuItem.setName("exitMenuItem");
-        //@TODO exitMenuItem.setAction(actionMap.get("quit"));
+        exitMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                performExitSequence();
+            }
+        });
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
@@ -1409,6 +1438,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         helpMenu.setName("helpMenu");
 
         aboutMenuItem.setName("aboutMenuItem");
+        aboutMenuItem.setText(lang.getString("aboutMenuItem.text"));
         aboutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 showAboutBox();
@@ -1518,25 +1548,17 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         this.setLayout(new MigLayout("fill", "0[]0", "0[]0[min!]0"));
         this.add(mainPanel, "grow, wrap");
         this.add(statusPanel, "growx");
-        //setComponent(mainPanel);
         this.setJMenuBar(menuBar);
-        //setStatusBar(statusPanel);
-    }
 
-    /**
-     * Fixes the oddities of the component placing that netbeans does.
-     */
-    public final void fixComponents() {
         consoleOutput.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
         consoleOutput.setStyledDocument(new javax.swing.text.html.HTMLDocument());
         backupStatusLog.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
         backupStatusLog.setStyledDocument(new javax.swing.text.html.HTMLDocument());
         webLog.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
         webLog.setStyledDocument(new javax.swing.text.html.HTMLDocument());
+
         // Sets the application icon
-        //org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.dumptruckman.pail.pail.Main.class).getContext().getResourceMap(Pail.class);
-        //this.getFrame().setIconImage(resourceMap.getImageIcon("imageLabel.icon").getImage());
-        //@TODO
+        this.setIconImage(Toolkit.getDefaultToolkit().createImage(Pail.this.getClass().getResource("resources/mcserverguiicon.png")));
     }
 
     /**
@@ -1555,6 +1577,28 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             });
         }
     };
+
+    public void performExitSequence() {
+        saveConfigAction();
+
+        if (server.isRunning()) {
+            wantsToQuit = true;
+            System.out.println("Server is running and GUI would like to exit");
+            this.stopServer();
+        } else {
+            try {
+                scheduler.shutdown();
+            } catch (SchedulerException se) {
+                se.printStackTrace();
+            }
+            exitGui();
+        }
+    }
+
+    public void exitGui() {
+        this.dispose();
+        System.exit(0);
+    }
 
     /**
      * Action object for the sending of input with prepended "Say " (caused by shift+enter)
@@ -1590,14 +1634,16 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             public void run() {
                 config.setWindowTitle(windowTitleField.getText());
                 Pail.this.setTitle(windowTitleField.getText());
-                trayIcon.setToolTip(windowTitleField.getText());
+                if (trayIcon != null) {
+                    trayIcon.setToolTip(windowTitleField.getText());
+                }
             }
         });
     }
 
     private void javaExecBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javaExecBrowseButtonActionPerformed
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                 final JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showOpenDialog(Pail.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1838,7 +1884,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         saveConfig();
     }//GEN-LAST:event_saveBackupControlButtonActionPerformed
 
-    private void backupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupButtonActionPerformed
+    private void backupButtonActionPerformed(java.awt.event.ActionEvent evt) {
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
                 config.backups.setPath(backupPathField.getText());
@@ -1846,21 +1892,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             }
         });
         
-    }//GEN-LAST:event_backupButtonActionPerformed
-
-    private void tabberStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabberStateChanged
-        SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
-                if (tabber.getSelectedIndex() == 3) {
-                    refreshBackupFileChooser();
-                }
-            }
-        });
-    }//GEN-LAST:event_tabberStateChanged
-
-    private void backupControlRefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupControlRefreshButtonActionPerformed
-        refreshBackupFileChooser();
-    }//GEN-LAST:event_backupControlRefreshButtonActionPerformed
+    }
 
     private void backupPathBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupPathBrowseButtonActionPerformed
         SwingUtilities.invokeLater(new Runnable() {
@@ -1886,29 +1918,66 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         });
     }//GEN-LAST:event_backupPathBrowseButtonActionPerformed
 
-    private void backupPathFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupPathFieldActionPerformed
+    private void backupPathFieldActionPerformed(java.awt.event.ActionEvent ignore) {
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
                 config.backups.setPath(backupPathField.getText());
             }
         });
-    }//GEN-LAST:event_backupPathFieldActionPerformed
+    }
 
-    private void zipBackupCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zipBackupCheckBoxActionPerformed
+    private void zipBackupCheckBoxActionPerformed(java.awt.event.ActionEvent ignore) {
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
                 config.backups.setZip(zipBackupCheckBox.isSelected());
             }
         });
-    }//GEN-LAST:event_zipBackupCheckBoxActionPerformed
+    }
 
-    private void taskListAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taskListAddButtonActionPerformed
+    private void taskListAddButtonActionPerformed(java.awt.event.ActionEvent ignore) {
         addTaskListEntry();
-    }//GEN-LAST:event_taskListAddButtonActionPerformed
+    }
+
+    private void backupAddButtonActionPerformed(java.awt.event.ActionEvent ignore) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                final JFileChooser fc = new JFileChooser(new File("."));
+                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fc.setDialogTitle("Select Files/Folders");
+                fc.setMultiSelectionEnabled(true);
+                int returnVal = fc.showOpenDialog(Pail.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File[] files = fc.getSelectedFiles();
+                    for (File file : files) {
+                        backupFileListModel.add(file);
+                    }
+                }
+                cmdLineField.setText(config.cmdLine.parseCmdLine());
+            }
+        });
+    }
+
+    private void backupRemoveButtonActionPerformed(java.awt.event.ActionEvent ignore) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                System.out.println(backupFileList.getSelectedValues().getClass());
+                //File[] files = (File[])backupFileList.getSelectedValues();
+                //if (files != null) {
+                //    removeFilesFromPaths(files);
+                //}
+            }
+        });
+    }
+
+    public void removeFilesFromPaths(File[] files) {
+        for (File file : files) {
+            backupFileListModel.removeElement(file);
+        }
+    }
 
     private void taskListEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taskListEditButtonActionPerformed
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                  EventModel event = (EventModel)taskSchedulerList.getSelectedValue();
                  if (event != null) {
                     editTaskListEntry(event);
@@ -1978,7 +2047,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
 
     private void textColorBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textColorBoxMouseClicked
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                 ColorChooser colorchooser = new ColorChooser(
                         Pail.this, textColorBox);
                 colorchooser.setLocationRelativeTo(Pail.this);
@@ -2276,7 +2345,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         }
     }//GEN-LAST:event_launchSupportPageActionPerformed
 
-    private void viewChangeLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewChangeLogActionPerformed
+    private void viewChangeLogActionPerformed(java.awt.event.ActionEvent evt) {
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
                 ChangeLog changeLog = new ChangeLog(Pail.this, versionNumber);
@@ -2284,7 +2353,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
                 //@TODO Main.getApplication().show(changeLog);
             }
         });
-    }//GEN-LAST:event_viewChangeLogActionPerformed
+    }
 
     private void downloadLatestVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadLatestVersionActionPerformed
         String urltext = "https://raw.github.com/dumptruckman/MC-Server-Pail--multi-/master/VERSION";
@@ -2405,14 +2474,14 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBox allowFlightCheckBox;
     public javax.swing.JCheckBox allowNetherCheckBox;
     public javax.swing.JButton backupButton;
-    public javax.swing.JButton backupControlRefreshButton;
-    public it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree backupFileChooser;
+    public JList backupFileList;
     public javax.swing.JPanel backupFileChooserPanel;
     public javax.swing.JButton backupPathBrowseButton;
+    public javax.swing.JButton backupAddButton;
+    public javax.swing.JButton backupRemoveButton;
     public javax.swing.JTextField backupPathField;
     public javax.swing.JLabel backupPathLabel;
     public javax.swing.JPanel backupSettingsPanel;
@@ -2461,8 +2530,8 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     public javax.swing.JPanel guiConfigPanel;
     public javax.swing.JScrollPane consoleOutScrollPane;
     public javax.swing.JScrollPane playerListScrollPane;
-    public javax.swing.JScrollPane jScrollPane3;
-    public javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JScrollPane backupFileListScrollPane;
+    public javax.swing.JScrollPane backupStatusLogScrollPane;
     public javax.swing.JScrollPane taskSchedulerScrollPane;
     public javax.swing.JScrollPane webLogScrollPane;
     public javax.swing.JButton javaExecBrowseButton;
@@ -2523,6 +2592,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     public javax.swing.JPanel statusPanel;
     public javax.swing.JButton submitButton;
     public javax.swing.JTabbedPane tabber;
+    //public javax.swing.JTabbedPane configTabber;
     public javax.swing.JButton taskListAddButton;
     public javax.swing.JButton taskListEditButton;
     public javax.swing.JButton taskListRemoveButton;
@@ -2649,7 +2719,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
 
-                taskDialog = new TaskDialog(Pail.this, config, scheduler, Pail.this);
+                taskDialog = new TaskDialog(Pail.this);
                 taskDialog.setLocationRelativeTo(Pail.this);
                 //@TODO Main.getApplication().show(taskDialog);
             }
@@ -2660,40 +2730,9 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         final EventModel event = evt;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                taskDialog = new TaskDialog(Pail.this, config, scheduler, Pail.this,
-                        event);
+                taskDialog = new TaskDialog(Pail.this, event);
                 taskDialog.setLocationRelativeTo(Pail.this);
-                //@TODO Main.getApplication().show(taskDialog);
-            }
-        });
-    }
-
-    public static javax.swing.tree.TreePath createTreePath(File f) {
-        List<File> path = new ArrayList<File>();
-        path.add(f);
-        while((f = f.getParentFile()) != null) {
-            path.add(0,f);
-        }
-        return new javax.swing.tree.TreePath(path.toArray());
-    }
-
-    public javax.swing.tree.TreePath[] createTreePathArray(List<String> paths) {
-        javax.swing.tree.TreePath[] treepatharray = new javax.swing.tree.TreePath[paths.size()];
-        int i = 0;
-        while (i < paths.size()) {
-            treepatharray[i] = createTreePath(new File(paths.get(i)));
-            i++;
-        }
-
-        return treepatharray;
-    }
-
-    private void refreshBackupFileChooser() {
-        SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
-                if (!controlState.equals("BACKUP")) {
-                    backupFileChooser.updateUI();
-                }
+                taskDialog.setVisible(true);
             }
         });
     }
@@ -2704,18 +2743,12 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
                 stateBeforeBackup = controlState;
                 controlSwitcher("BACKUP");
                 statusBarJob.setText("Backing up:");
-                //TaskMonitor taskMonitor = getApplication().getContext().getTaskMonitor();
-                //TaskService taskService = getApplication().getContext().getTaskService();
                 if (server.isRunning()) {
                     sendInput("save-off");
                     sendInput("say Backing up server...");
                 }
-                new File(config.backups.getPath()).mkdir(); // Creates backup directory if it doesn't exist
-                Backup backup = new Backup(Pail.this, backupStatusLog);
-                //taskMonitor.setForegroundTask(backup.getTask());
-                backupStatusLog.setText("");
-                backup.addObserver(Pail.this);
-                //@TODO taskService.execute(backup.getTask());
+                backup = new Backup(Pail.this);
+                backup.startBackup();
             }
         });
     }
@@ -2904,7 +2937,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
                 while (it.hasNext()) {
                     EventModel event = (EventModel)it.next();
                     if (!event.isCustomButton()) {
-                        scheduleEvent(event, scheduler, Pail.this);
+                        scheduleEvent(event, Pail.this);
                     } else {
                         customCombo1.addItem(event.getName());
                         customCombo2.addItem(event.getName());
@@ -2917,25 +2950,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     }
 
     public void initBackupFileChooser() {
-        //backupFileChooser.setCheckingModel(new GUITreeCheckingModel(backupFileSystem, Pail.this));
-        backupFileChooser.getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.SIMPLE);
-        //backupFileChooser.setCheckingPaths(createTreePathArray(config.backups.getPathsToBackup()));
-        //javax.swing.tree.TreePath[] paths = createTreePathArray(config.backups.getPathsToBackup());
-        //for (int i = 0; i < paths.length; i++) {
-        //backupFileChooser.addCheckingPath(paths[i]);
-        /*
-            Thread initBackupPaths = new Thread() {
-                
-                public void run() {
-                    backupFileChooser.setCheckingPaths(createTreePathArray(config.backups.getPathsToBackup()));
-                }
-            };
-            initBackupPaths.start();
-
-         * 
-         */
-        //}
-        backupFileChooser.setCheckingPaths(createTreePathArray(config.backups.getPathsToBackup()));
+        // @TODO
     }
 
     public void updateGuiWithServerProperties() {
@@ -3030,13 +3045,7 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
 
     public void saveBackupPathsToConfig() {
         config.backups.getPathsToBackup().clear();
-        //for (int i = 0; i < backupFileChooser.getCheckingRoots().length; i++) {
-        //    config.backups.getPathsToBackup().add(backupFileChooser.getCheckingRoots()[i].getLastPathComponent().toString());
-        //}
-        for (int i = 0; i < backupFileChooser.getCheckingPaths().length; i++) {
-            config.backups.getPathsToBackup().add(backupFileChooser.getCheckingPaths()[i].getLastPathComponent().toString());
-        }
-        //config.backups.setPathsToBackup(pathsToBackup);
+        //@TODO
     }
 
     public void saveConfigAction() {
@@ -3149,12 +3158,12 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
              public void run() {
                 if (controlState.equals("OFF")) {
                     setConsoleOutput("");
-                    /* @TODO
-                    TaskMonitor taskMonitor = getApplication().getContext().getTaskMonitor();
-                    if ((taskMonitor.getForegroundTask() != null) && taskMonitor.getForegroundTask().isStarted()) {
-                        guiLog("Stopping backup first.");
-                        taskMonitor.getForegroundTask().cancel(true);
-                    }*/
+                    if (backup != null) {
+                        if (!backup.task.isDone()) {
+                            guiLog("Stopping backup first.");
+                            backup.task.cancel(true);
+                        }
+                    }
                     server.setCmdLine(config.cmdLine.getCmdLine());
                     String start = server.start();
                     if (start.equals("SUCCESS")) {
@@ -3197,9 +3206,10 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
                     guiLog("Stopping backup first.");
                     taskMonitor.getForegroundTask().cancel(true);
                 }
+                */
                 if (server.isRunning()) {
                     server.stop();
-                }*/
+                }
             }
         });
     }
@@ -3254,12 +3264,11 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
 
     /**
      * Adds text to the end of the Console Output box.
-     * @param textToAdd String of text to add.
+     * @param text String of text to add.
      */
-    public void addTextToConsoleOutput(String textToAdd) {
-        final String text = textToAdd;
+    public void addTextToConsoleOutput(final String text) {
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                 try
                 {
                     ((HTMLEditorKit)consoleOutput.getEditorKit())
@@ -3306,9 +3315,9 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         final String text = setText;
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
-                consoleOutput.setText("<body bgcolor = " + config.display.getBgColor()
+                consoleOutput.setText("<html><body bgcolor = " + config.display.getBgColor()
                         + "><font color = \"" + config.display.getTextColor()
-                        + "\" size = " + config.display.getTextSize() + ">" + text);
+                        + "\" size = " + config.display.getTextSize() + ">" + text + "</html>");
             }
         });
     }
@@ -3337,42 +3346,12 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
         });
     }
 
-    /**
-     * Observer update() method.  Called when the MCServerModel has messages for the View
-     * @param o
-     * @param arg Message
-     */
-    public void update(Observable o, Object arg) {
-        if (arg.equals("newOutput")) {
-            String newOutput = server.getReceived();
-            if ((newOutput != null) && (!newOutput.equals("null\n"))) {
-                addTextToConsoleOutput(newOutput);
-            }
+    public void serverStopped() {
+        controlSwitcher("OFF");
+        if (restarting) {
+            startServer(restartDelay);
         }
-
-        if (arg.equals("serverStopped")) {
-            controlSwitcher("OFF");
-            if (restarting) {
-                startServer(restartDelay);
-            }
-        }
-        if (arg.equals("serverStarted")) {
-            controlSwitcher("ON");
-        }
-
-        if (arg.equals("finishedBackup")) {
-            SwingUtilities.invokeLater(new Runnable() {
-                 public void run() {
-                    if (server.isRunning()) {
-                        sendInput("say Server backup complete!");
-                        sendInput("save-on");
-                    }
-                    controlSwitcher("!BACKUP");
-                }
-            });
-        }
-
-        if ((arg.equals("serverStopped")) && (wantsToQuit)) {
+        if (wantsToQuit) {
             try {
                 while(!scheduler.getCurrentlyExecutingJobs().isEmpty()) {
                     System.out.println("Interrupting a job");
@@ -3382,18 +3361,22 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
             } catch (SchedulerException se) {
                 se.printStackTrace();
             }
-            System.exit(0);
+            exitGui();
         }
+    }
+
+    public void serverStarted() {
+        controlSwitcher("ON");
     }
 
     /**
      * Switches Pail components into specific states based on param passed.
      * @param newServerState Typically the state of the server. "ON" or "OFF"
      */
-    private void controlSwitcher(String newServerState) {
+    public void controlSwitcher(String newServerState) {
         final String serverState = newServerState;
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                 controlState = serverState;
                 if (serverState.equals("ON")) {
                     // Switch Pail control to "ON" status
@@ -3421,30 +3404,32 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
                 } else if (serverState.equals("BACKUP")) {
                     //startstopButton.setEnabled(false);
                     saveWorldsButton.setEnabled(false);
-                    backupControlRefreshButton.setEnabled(false);
                     backupButton.setEnabled(false);
                     saveThemeButton.setEnabled(false);
                     saveServerConfigButton.setEnabled(false);
                     saveBackupControlButton.setEnabled(false);
                     backupPathField.setEnabled(false);
                     backupPathBrowseButton.setEnabled(false);
-                    backupFileChooser.setEnabled(false);
+                    //backupFileChooser.setEnabled(false);
                 } else if (serverState.equals("!BACKUP")) {
                     //startstopButton.setEnabled(true);
                     saveWorldsButton.setEnabled(true);
-                    backupControlRefreshButton.setEnabled(true);
                     backupButton.setEnabled(true);
                     saveThemeButton.setEnabled(true);
                     saveServerConfigButton.setEnabled(true);
                     saveBackupControlButton.setEnabled(true);
                     backupPathField.setEnabled(true);
                     backupPathBrowseButton.setEnabled(true);
-                    backupFileChooser.setEnabled(true);
+                    //backupFileChooser.setEnabled(true);
                     statusBarJob.setText("");
                     controlSwitcher(stateBeforeBackup);
                 }
             }
         });
+    }
+
+    public void finishBackup() {
+        backup = null;
     }
 
     public boolean isPropagatingChecks() {
@@ -3468,20 +3453,15 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     }
 
     public MCServerModel server;
-    //private MCServerReceiver serverReceiver;
-    //private PailWorker pailWorker;
     private boolean textScrolling;
     private boolean mouseInConsoleOutput;
     private List<String> inputHistory;
-    //private List<String> pathsToBackup;
     private int inputHistoryIndex;
     private String controlState;
     private String stateBeforeBackup;
     private org.dumptruckman.pail.fileexplorer.FileSystemModel backupFileSystem;
     public Config config;
-    //private boolean badConfig;
     private Scheduler scheduler;
-    //private GUIListModel taskList;
     public javax.swing.DefaultComboBoxModel customButtonBoxModel1;
     public javax.swing.DefaultComboBoxModel customButtonBoxModel2;
     private boolean restarting;
@@ -3493,11 +3473,13 @@ public class Pail extends javax.swing.JFrame implements Observer, ComponentListe
     private boolean isHidden;
     private java.awt.TrayIcon trayIcon;
     private WebInterface webServer;
-    private String versionNumber;
     private int restartDelay;
     private boolean propagatingChecks;
     private boolean schedulePaused;
-    private PailWorker pailWorker;
+    public PailWorker pailWorker;
+    public GUIListModel backupFileListModel;
+    private String versionNumber;
+    public Backup backup;
 
     public static enum LogLevel { INFO, WARNING, SEVERE }
     public static enum OutputFormat { 
