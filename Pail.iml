@@ -12,7 +12,6 @@
     <orderEntry type="library" name="CraftBukkit" level="project" />
     <orderEntry type="library" name="GroupLayout" level="project" />
     <orderEntry type="library" name="MigLayout" level="project" />
-    <orderEntry type="library" exported="" name="CheckBoxtree" level="project" />
     <orderEntry type="library" exported="" name="JSON" level="project" />
     <orderEntry type="library" exported="" name="jsoup" level="project" />
     <orderEntry type="library" exported="" name="lib" level="project" />
@@ -22,7 +21,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/src/org/dumptruckman/pail/resources" />
+          <root url="file://$MODULE_DIR$/src/com/dumptruckman/pail/resources" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

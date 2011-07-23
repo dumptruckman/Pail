@@ -1,9 +1,9 @@
 Installation
-    1. Unzip org.dumptruckman.pail.jar, nativelibs (and if running Windows,
+    1. Unzip com.dumptruckman.pail.jar, nativelibs (and if running Windows,
         guilauncher.bat) into your Minecraft Server directory.
     2. Window users may launch the GUI using guilauncher.bat.  Other users must 
         run from a command line with
-        "java -Djava.library.path=./nativelibs -jar org.dumptruckman.pail.jar".
+        "java -Djava.library.path=./nativelibs -jar com.dumptruckman.pail.jar".
         (Please note, if you do not launch with the VM option of
         -Djava.library.path=./nativelibs then the cpu/memory/network features
         will probably not function)
