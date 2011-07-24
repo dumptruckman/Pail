@@ -22,6 +22,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
@@ -53,8 +54,6 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
 
     private static final int MIN_WIDTH = 451;
     private static final int MIN_HEIGHT = 521;
-    private static final int WIDTH = 700;
-    private static final int HEIGHT = 700;
 
     public Pail() {
         config = new Config();
@@ -67,6 +66,8 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
         
 
         UIManager.put("TitledBorder.border", new BorderUIResource(new EtchedBorder()));
+        UIManager.put("Button.contentMargins", new InsetsUIResource(0,0,0,0));
+
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -75,7 +76,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 }
             }
         } catch (Exception e) {
-            // If Nimbus is not available, you can set the Pail to another look and feel.
+            //@TODO Add warning message
         }
 
         // Sets model for backup file check box tree
@@ -145,7 +146,13 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
             }
         });
 
-        this.setSize(WIDTH, HEIGHT);
+        DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode();
+
+        int screenWidth = dm.getWidth();
+        int screenHeight = dm.getHeight();
+        int width = (int)(screenWidth / 1.5);
+        int height = (int)(screenHeight / 1.5);
+        this.setBounds((screenWidth - width) / 2, (screenHeight - height) / 2, width, height);
     }
 
     public void initScheduler() {
@@ -3132,7 +3139,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                     setConsoleOutput("");
                     if (backup != null) {
                         if (!backup.task.isDone()) {
-                            guiLog("Stopping backup first.");
+                            guiLog("Stopping backup first to avoid world corruption.");
                             backup.task.cancel(true);
                         }
                     }
@@ -3172,13 +3179,10 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
     public void stopServer() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                /* @TODO
-                TaskMonitor taskMonitor = getApplication().getContext().getTaskMonitor();
-                if ((taskMonitor.getForegroundTask() != null) && taskMonitor.getForegroundTask().isStarted()) {
-                    guiLog("Stopping backup first.");
-                    taskMonitor.getForegroundTask().cancel(true);
+                if (backup != null) {
+                    guiLog("Stopping backup first to avoid world corruption.");
+                    backup.task.cancel(true);
                 }
-                */
                 if (server.isRunning()) {
                     server.stop();
                 }

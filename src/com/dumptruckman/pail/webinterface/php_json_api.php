@@ -1,10 +1,15 @@
 <?php
     /*
      * PHP JSON API for MC Server GUI
-     * Version 2.1
+     * Version .3.0
      *
      * Change Log
-     * Version .2.1
+     * Version .3.0
+     *      Added removeTask()
+     *      Added performBackup()
+     *      Added toggleScheduler()
+     *
+     * Version .2.2
      *      Now uses php constants instead of globals for ip, port, pass.
      *      The functions now handle the responses a bit more for you.  They
      *              will return the data section of a response if successful or
@@ -88,6 +93,24 @@
         } else {
             return "Error opening connection";
         }
+    }
+
+    // This function will backup the server
+    function performBackup() {
+        $response = sendToGui(array('Password' => PASSWORD, 'Request' => 'Backup'));
+        return handleResponse($response);
+    }
+
+    // This function will remove a task item
+    function removeTask($input) {
+        $response = sendToGui(array('Password' => PASSWORD, 'Request' => 'Remove Task', 'Data' => array($input)));
+        return handleResponse($response);
+    }
+
+    // This function will pause or start the scheduler
+    function toggleScheduler() {
+        $response = sendToGui(array('Password' => PASSWORD, 'Request' => 'Toggle Scheduler'));
+        return handleResponse($response);
     }
 
     // This will handle the response from the server and either return that

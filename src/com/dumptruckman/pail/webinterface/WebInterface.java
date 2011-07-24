@@ -456,6 +456,32 @@ public class WebInterface {
                             .getResponse();
                 }
             }
+            // Backup files
+            else if (request.equalsIgnoreCase("Backup")) {
+                pail.backup();
+                webLog(client, "issued a backup");
+                response = new ResponseWriter("Success", "Backing Up")
+                        .getResponse();
+            }
+            // Remove Task List item
+            else if (request.equalsIgnoreCase("Remove Task")) {
+                java.util.List<String> data = getRequestData(jp);
+                if (!data.isEmpty()) {
+                    pail.removeTaskByName(data.get(0));
+                    webLog(client, "removed task " + data.get(0));
+                    response = new ResponseWriter("Success", "Task removed").getResponse();
+                }
+            }
+            // Pause/start Scheduler
+            else if (request.equalsIgnoreCase("Toggle Scheduler")) {
+                if (pail.pauseSchedule()) {
+                    webLog(client, "paused scheduler");
+                    response = new ResponseWriter("Success", "Scheduler Toggled").add("Data", "Paused").getResponse();
+                } else {
+                    webLog(client, "resumed scheduler");
+                    response = new ResponseWriter("Success", "Scheduler Toggled").add("Data", "Resumed").getResponse();
+                }
+            }
             /*
             else if (request.equalsIgnoreCase("Server Status")) {
                 if (!pail.config.web.isDisableGetRequests()) {
