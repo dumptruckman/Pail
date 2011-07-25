@@ -23,6 +23,7 @@ package com.dumptruckman.pail.proxyserver;
 
 import com.dumptruckman.pail.Pail;
 import com.dumptruckman.pail.config.ServerProperties;
+import com.dumptruckman.pail.listmodel.GUIListModel;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -125,6 +126,20 @@ public class ProxyServer {
 
                 synchronized (this) {
                     InetAddress address;
+                    if (pail.config.getExtPort().equals(pail.config.getIntPort())) {
+                        pail.guiLog("The Proxy's internal and external port are set to the same thing.  " +
+                                "Please correct this in the Configuration Tab.", Pail.LogLevel.SEVERE);
+                        startCode = -1;
+                        this.notifyAll();
+                        break;
+                    }
+                    if (serverProps.getServerPort().equals(pail.config.getExtPort().toString())) {
+                        pail.guiLog("The Proxy External Port cannot be the same as the Minecraft Server Port!  " +
+                                "Please change this in the Configuration Tab!", Pail.LogLevel.SEVERE);
+                        startCode = -1;
+                        this.notifyAll();
+                        break;
+                    }
                     if (ip.equals("0.0.0.0")) {
                         address = null;
                     } else {
@@ -152,12 +167,11 @@ public class ProxyServer {
                         break;
                     }
 
-                    pail.guiLog("Listening on " + socket.getInetAddress()
-                            .getHostAddress() + ":" + socket.getLocalPort()
-                            + " (players connect here)");
-                    if (socket.getInetAddress().getHostAddress().equals("0.0.0.0")) {
-                        pail.guiLog("0.0.0.0 means all IP addresses; you want "
-                                + "this.");
+                    pail.guiLog("Forwarding network traffic on port " + port + " to port "
+                            + pail.config.getIntPort() + ".  Players should connect to port " + port);
+                    if (!serverProps.getServerPort().equals(pail.config.getIntPort().toString())) {
+                        pail.guiLog("The proxy's Internal Port is not set to the same as your Minecraft Server's port." +
+                                "Typically they should be the same unless you're using an additional proxy.");
                     }
                     startCode = 1;
                     this.notifyAll();
@@ -169,10 +183,11 @@ public class ProxyServer {
                         try {
                             client = socket.accept();
                         } catch (java.io.IOException e) {
-                            pail.guiLog(e.toString(), Pail.LogLevel.WARNING);
-                            pail.guiLog("Accept failed on port " + port + "!"
-                                    + "  Server likely stopped.",
-                                    Pail.LogLevel.WARNING);
+                            pail.guiLog("Proxy server stopped.");
+                            //pail.guiLog(e.toString(), Pail.LogLevel.WARNING);
+                            //pail.guiLog("Accept failed on port " + port + "!"
+                            //        + "  Server likely stopped.",
+                            //        Pail.LogLevel.WARNING);
                             break;
                         }
                         new Player(client, ProxyServer.this);

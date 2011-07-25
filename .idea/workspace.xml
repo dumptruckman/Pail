@@ -6,10 +6,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG" afterPath="$PROJECT_DIR$/CHANGELOG" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO" afterPath="$PROJECT_DIR$/TODO" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/Player.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/Player.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/WebInterface.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/WebInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/php_json_api.php" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/php_json_api.php" />
     </list>
     <ignored path="MC-Server-GUI--multi-.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,54 +79,52 @@
       <file leaf-file-name="TODO" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TODO">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="43" selection-start="1534" selection-end="1534" vertical-scroll-proportion="0.0">
+            <state line="33" column="26" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaskDialog.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="801" column="119" selection-start="40929" selection-end="40929" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Pail.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Pail.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="638" column="75" selection-start="28917" selection-end="28917" vertical-scroll-proportion="0.45641646">
+            <state line="2975" column="75" selection-start="144341" selection-end="144341" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaskDialog.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties">
+      <file leaf-file-name="Config.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="18" selection-start="6112" selection-end="6112" vertical-scroll-proportion="-11.846154">
+            <state line="91" column="25" selection-start="3382" selection-end="3382" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CHANGELOG" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MCServerModel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="71" column="35" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProxyServer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="130" column="103" selection-start="4156" selection-end="4156" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CHANGELOG" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CHANGELOG">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Backup.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="206" column="125" selection-start="8156" selection-end="8156" vertical-scroll-proportion="0.0">
+            <state line="5" column="75" selection-start="332" selection-end="332" vertical-scroll-proportion="0.17453799">
               <folding />
             </state>
           </provider>
@@ -143,22 +144,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/ChangeLog.java" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/resources/Pail.properties" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/backup/Backup.java" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/Pail.java" />
-        <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/config/Config.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/webinterface/WebInterface.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/task/ServerWarning.java" />
         <option value="$PROJECT_DIR$/src/org/dumptruckman/pail/task/TaskDialog.java" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java" />
-        <option value="$PROJECT_DIR$/CHANGELOG" />
-        <option value="$PROJECT_DIR$/TODO" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/WebInterface.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/php_json_api.php" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/Player.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" />
+        <option value="$PROJECT_DIR$/TODO" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java" />
+        <option value="$PROJECT_DIR$/CHANGELOG" />
       </list>
     </option>
   </component>
@@ -195,7 +196,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -330,6 +330,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="proxyserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mcserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -358,8 +402,9 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Favorites" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -376,9 +421,9 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -530,14 +575,13 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969324" sideWeight="0.609447" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39976957" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32603687" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6086956" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32822084" sideWeight="0.609447" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993865" sideWeight="0.609447" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22699386" sideWeight="0.609447" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -545,6 +589,7 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39897698" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -597,34 +642,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_25/src.zip!/java/util/concurrent/FutureTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="215" column="0" selection-start="7433" selection-end="7433" vertical-scroll-proportion="0.12083333" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/AboutBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="0" selection-start="2678" selection-end="2678" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/PailWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="87" selection-start="4945" selection-end="4945" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/task/event/EventScheduler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="29" selection-start="985" selection-end="985" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/listmodel/GUIListModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="0" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="642" column="55" selection-start="29095" selection-end="29095" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/task/ServerWarningDialog.java">
@@ -647,40 +667,79 @@
         <state line="481" column="119" selection-start="19381" selection-end="19381" vertical-scroll-proportion="0.354" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CHANGELOG">
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" />
+        <state line="122" column="19" selection-start="4544" selection-end="4544" vertical-scroll-proportion="3.706">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/TaskDialog.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="18" selection-start="6112" selection-end="6112" vertical-scroll-proportion="-11.846154">
+        <state line="133" column="173" selection-start="6321" selection-end="6321" vertical-scroll-proportion="2.0821354">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="39" selection-start="2152" selection-end="2154" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="35" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="211" column="34" selection-start="10355" selection-end="10355" vertical-scroll-proportion="0.650924">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="25" selection-start="3382" selection-end="3382" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2975" column="75" selection-start="144341" selection-end="144341" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TODO">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="43" selection-start="1534" selection-end="1534" vertical-scroll-proportion="0.0" />
+        <state line="33" column="26" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/backup/Backup.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="125" selection-start="8156" selection-end="8156" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="801" column="119" selection-start="40929" selection-end="40929" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="80" column="77" selection-start="2667" selection-end="2667" vertical-scroll-proportion="2.38">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="638" column="75" selection-start="28917" selection-end="28917" vertical-scroll-proportion="0.45641646">
+        <state line="130" column="103" selection-start="4156" selection-end="4156" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CHANGELOG">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="75" selection-start="332" selection-end="332" vertical-scroll-proportion="0.17453799">
           <folding />
         </state>
       </provider>

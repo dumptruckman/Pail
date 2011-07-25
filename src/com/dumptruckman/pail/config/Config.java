@@ -27,6 +27,7 @@ public class Config {
         _windowTitle = "Pail";
         _inputHistoryMaxSize = 30;
         _extPort = 25565;
+        _intPort = 25566;
         _proxy = true;
         _serverStartOnStartup = false;
         _commandPrefix = "!";
@@ -41,7 +42,7 @@ public class Config {
     
     private String _windowTitle, _commandPrefix;
     private String _customButton1, _customButton2;
-    private int _inputHistoryMaxSize, _extPort;
+    private Integer _inputHistoryMaxSize, _extPort, _intPort;
     private boolean _proxy, _serverStartOnStartup;
     public CMDLine cmdLine;
     public Backups backups;
@@ -62,9 +63,10 @@ public class Config {
     public void setWebInterface(WebInterface web) { this.web = web; }
 
     public boolean getProxy() { return _proxy; }
-    public int getExtPort() { return _extPort; }
+    public Integer getExtPort() { return _extPort; }
+    public Integer getIntPort() { return _intPort; }
     public String getWindowTitle() { return _windowTitle; }
-    public int getInputHistoryMaxSize() { return _inputHistoryMaxSize; }
+    public Integer getInputHistoryMaxSize() { return _inputHistoryMaxSize; }
     public boolean getServerStartOnStartup() { return _serverStartOnStartup; }
     public String getCommandPrefix() { return _commandPrefix; }
     public String getCustomButton1() { return _customButton1; }
@@ -72,6 +74,7 @@ public class Config {
 
     public void setProxy(boolean b) { _proxy = b; }
     public void setExtPort(int i) { _extPort = i; }
+    public void setIntPort(int i) { _intPort = i; }
     public void setWindowTitle(String s) { _windowTitle = s; }
     public void setInputHistoryMaxSize(int i) { _inputHistoryMaxSize = i; }
     public void setServerStartOnStartup(boolean b) { _serverStartOnStartup = b; }
@@ -86,7 +89,7 @@ public class Config {
             _infoColor = "339900";
             _warningColor = "CC6600";
             _severeColor = "FF0000";
-            _textSize = 3;
+            _textSize = 4;
         }
         private String _textColor, _bgColor, _infoColor, _warningColor, _severeColor;
         private int _textSize;
@@ -386,8 +389,10 @@ public class Config {
                         setProxy(jp.getBooleanValue());
                     } else if ("Command Prefix".equals(fieldname)) {
                         setCommandPrefix(jp.getText());
-                    } else if ("Proxy Port".equals(fieldname)) {
+                    } else if ("Proxy External Port".equals(fieldname)) {
                         setExtPort(jp.getIntValue());
+                    } else if ("Proxy Internal Port".equals(fieldname)) {
+                        setIntPort(jp.getIntValue());
                     } else if ("MC Server Start on Pail Start".equals(fieldname)) {
                         setServerStartOnStartup(jp.getBooleanValue());
                     } else if ("Custom Button 1".equals(fieldname)) {
@@ -557,7 +562,8 @@ public class Config {
             jg.writeStringField("Window Title", getWindowTitle());
             jg.writeNumberField("Input History Max Size", getInputHistoryMaxSize());
             jg.writeBooleanField("Use Proxy Server", getProxy());
-            jg.writeNumberField("Proxy Port", getExtPort());
+            jg.writeNumberField("Proxy External Port", getExtPort());
+            jg.writeNumberField("Proxy Internal Port", getIntPort());
             jg.writeBooleanField("MC Server Start on Pail Start", getServerStartOnStartup());
             jg.writeStringField("Command Prefix", getCommandPrefix());
             jg.writeStringField("Custom Button 1", getCustomButton1());

@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.zip.ZipEntry;
@@ -32,6 +33,7 @@ public class Backup extends Observable {
         } catch (IOException ioe) {
             System.out.println("Error retrieving working dir");
         }
+        missingFileList = new ArrayList<File>();
     }
 
     public void startBackup() {
@@ -82,6 +84,10 @@ public class Backup extends Observable {
                 // Calculate size
                 for (File file : files) {
                     totalSize += getFileSize(file, backupDir);
+                }
+                // Remove missing files
+                for (File file : missingFileList) {
+                    pail.config.backups.getPathsModel().removeElement(file);
                 }
                 pail.progressBar.setMaximum((int)Math.ceil(totalSize / 1024));
 
@@ -180,7 +186,11 @@ public class Backup extends Observable {
                 return 0;
             }
         } catch (IOException ignore) { }
-
+        if (!folder.exists()) {
+            addTextToBackupLog("<font color=red>File \"" + folder.getPath() + "\" does not exist.  Removing from list." + nl);
+            missingFileList.add(folder);
+            return 0;
+        }
         File[] filelist = folder.listFiles();
         if (filelist != null) {
             for (int i = 0; i < filelist.length; i++) {
@@ -330,5 +340,6 @@ public class Backup extends Observable {
     private String workingDir;
     private int depth;
     private Pail pail;
+    private List<File> missingFileList;
     public BackupTask task;
 }

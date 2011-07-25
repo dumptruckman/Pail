@@ -22,18 +22,11 @@ import java.util.Timer;
  */
 public class MCServerModel implements java.beans.PropertyChangeListener {
     
-    public MCServerModel(Pail pail)
+    public MCServerModel(Pail pail, ServerProperties serverProps)
     {
         this.pail = pail;
         this.serverRunning = false;
-    }
-
-    public void setPail(Pail pail) {
-        this.pail = pail;
-    }
-
-    public void setServerProps(ServerProperties sp) {
-        serverProps = sp;
+        this.serverProps = serverProps;
     }
 
     // Method for building the cmdLine
@@ -76,7 +69,7 @@ public class MCServerModel implements java.beans.PropertyChangeListener {
             proxyServer = new ProxyServer(pail, serverProps);
             if (proxyServer.getStartCode() == -1) {
                 pail.guiLog("Proxy Server failed to starts correctly.  Aborting"
-                        + " server fstart.", Pail.LogLevel.SEVERE);
+                        + " server start.", Pail.LogLevel.SEVERE);
                 return "ERROR";
             } else {
                 // continue

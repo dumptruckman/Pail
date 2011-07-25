@@ -108,11 +108,11 @@ public class Player {
 
         try {
             InetAddress localAddress = InetAddress.getByName(addressFactory.getNextAddress());
-            intsocket = new Socket(InetAddress.getByName(null), Integer.valueOf(parent.serverProps.getServerPort()),
+            intsocket = new Socket(InetAddress.getByName(null), parent.pail.config.getIntPort(),
                     localAddress, 0);
         } catch (Exception e) {
             try {
-                intsocket = new Socket(InetAddress.getByName(null), Integer.valueOf(parent.serverProps.getServerPort()));
+                intsocket = new Socket(InetAddress.getByName(null), parent.pail.config.getIntPort());
             } catch (Exception E) {
                 System.err.println("Error opening forwarding socket");
                 //e.printStackTrace();

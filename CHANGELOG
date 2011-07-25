@@ -12,7 +12,8 @@ Version .9.7-dev
     The backup process is more efficient when zipping.  It no longer backs up to a folder first and then zips.  It just zips.
     Redid the progress bar to make more sense.  It is only used for backups now and it actually shows the progress.
     Added BukkitContrib compatibility.
-    
+    Added quite a number of additional checks to make sure new users understand better issues they are having with the Proxy.
+    Any files missing at the time of backup will be removed from the file list.
 
 Version .9.6.1
     Fixed issue where GUI restart tasks would cause the server to stop immediately.

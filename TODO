@@ -31,6 +31,7 @@ Changes:
     Completely redesign backup file selection (.9.7)
     Allow Configuration sections to be "minimized" (vertical buttons on the side?)
     Re-layout Configuration tab
+    Re-layout task dialog.
 
 Fixes:
     Fix server config tab for linux... (fixed in .9.7?)

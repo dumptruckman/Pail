@@ -67,40 +67,32 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
 
         UIManager.put("TitledBorder.border", new BorderUIResource(new EtchedBorder()));
         UIManager.put("Button.contentMargins", new InsetsUIResource(0,0,0,0));
-
+        boolean nimbusSet = false;
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
+                    nimbusSet = true;
                     break;
                 }
             }
-        } catch (Exception e) {
-            //@TODO Add warning message
-        }
+        } catch (Exception ignore) { }
 
-        // Sets model for backup file check box tree
-        //backupFileSystem = new com.dumptruckman.pail.fileexplorer.FileSystemModel(".");
         // Sets model for player list
         playerListModel = new PlayerList();
-        //backupFileListModel = new GUIListModel<File>();
         // Initializes the custom Button Combo Boxes
         customButtonBoxModel1 = new javax.swing.DefaultComboBoxModel();
         customButtonBoxModel1.addElement("Edit Tasks");
         customButtonBoxModel2 = new javax.swing.DefaultComboBoxModel();
         customButtonBoxModel2.addElement("Edit Tasks");
-        propagatingChecks = false;
-
-
 
         // Pail starts unhidden, indication of that:
         isHidden = false;
 
         serverProperties = new ServerProperties();
 
-        server = new MCServerModel(this);
+        server = new MCServerModel(this, serverProperties);
         pailWorker = new PailWorker(this);
-        server.setServerProps(serverProperties);
         setTitle(config.getWindowTitle());
         controlSwitcher("OFF");
 
@@ -153,6 +145,10 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
         int width = (int)(screenWidth / 1.5);
         int height = (int)(screenHeight / 1.5);
         this.setBounds((screenWidth - width) / 2, (screenHeight - height) / 2, width, height);
+
+        if (!nimbusSet) {
+            guiLog("Your version of Java does not support the Nimbus Look and Feel.  This version may have some visual oddities without Nimbus.", LogLevel.WARNING);
+        }
     }
 
     public void initScheduler() {
@@ -433,7 +429,6 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                     playerListPanel.add(playerListScrollPane, "grow");
                     {
                         playerList.setModel(playerListModel);
-                        playerList.setToolTipText(lang.getString("playerList.toolTipText"));
                         playerList.setFocusable(false);
                         playerList.setName("playerList");
                         playerList.addMouseListener(new MouseAdapter() {
@@ -2614,7 +2609,6 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
     public javax.swing.JTextField xmxMemoryField;
     public javax.swing.JLabel xmxMemoryLabel;
     public javax.swing.JCheckBox zipBackupCheckBox;
-    // End of variables declaration//GEN-END:variables
 
     public void outOfDate(String version) {
         final String ver = version;
@@ -2934,10 +2928,6 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
         });
     }
 
-    public void initBackupFileChooser() {
-
-    }
-
     public void updateGuiWithServerProperties() {
         SwingUtilities.invokeLater(new Runnable() {
              public void run() {
@@ -2961,7 +2951,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
 
     public void updateGuiWithConfigValues() {
         SwingUtilities.invokeLater(new Runnable() {
-             public void run() {
+            public void run() {
                 textColorBox.setBackground(java.awt.Color.decode("0x"
                         + config.display.getTextColor()));
                 bgColorBox.setBackground(java.awt.Color.decode("0x"
@@ -2979,14 +2969,12 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 disableGetOutputNotificationsCheckBox.setSelected(config.web.isDisableGetRequests());
                 useProxyCheckBox.setSelected(config.getProxy());
                 serverIpField.setEnabled(!useProxyCheckBox.isSelected());
-                extPortField.setText(Integer.toString(config.getExtPort()));
+                extPortField.setText(config.getExtPort().toString());
+                intPortField.setText(config.getIntPort().toString());
                 startServerOnLaunchCheckBox.setSelected(config.getServerStartOnStartup());
                 zipBackupCheckBox.setSelected(config.backups.getZip());
                 clearLogCheckBox.setSelected(config.backups.getClearLog());
-                //pathsToBackup = config.backups.getPathsToBackup();
                 backupPathField.setText(config.backups.getPath());
-                //backupFileChooser.setCheckingPaths(createTreePathArray(pathsToBackup));
-                initBackupFileChooser();
                 windowTitleField.setText(config.getWindowTitle());
                 commandPrefixField.setText(config.getCommandPrefix());
                 Pail.this.setTitle(windowTitleField.getText());
@@ -3019,10 +3007,12 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 }
                 cmdLineField.setText(config.cmdLine.parseCmdLine());
                 taskSchedulerList.setModel(config.schedule.getEvents());
+
+                ResourceBundle lang = ResourceBundle.getBundle("Pail");
                 if (useProxyCheckBox.isSelected()) {
-                    playerList.setToolTipText("This shows a list of players connected to the server.  Right click a to pull up the player action menu.");
+                    playerList.setToolTipText(lang.getString("playerList.proxyenabled.toolTipText"));
                 } else {
-                    playerList.setToolTipText("Player list is currently only supported when using the Pail's Proxy feature.");
+                    playerList.setToolTipText(lang.getString("playerList.proxydisabled.toolTipText"));
                 }
             }
         });
@@ -3062,6 +3052,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
         config.backups.setPath(backupPathField.getText());
         config.setProxy(useProxyCheckBox.isSelected());
         config.setExtPort(Integer.valueOf(extPortField.getText()));
+        config.setIntPort(Integer.valueOf(intPortField.getText()));
 
         config.save();
         saveServerProperties();
