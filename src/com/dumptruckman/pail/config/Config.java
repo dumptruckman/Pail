@@ -24,7 +24,7 @@ import java.util.List;
 public class Config {
 
     public Config() {
-        _windowTitle = "Pail";
+        _windowTitle = "MC Server GUI";
         _inputHistoryMaxSize = 30;
         _extPort = 25565;
         _intPort = 25566;
@@ -243,7 +243,7 @@ public class Config {
             _zip = true;
             _clearLog = false;
             try {
-                _path = new File(".").getCanonicalPath() + System.getProperty("file.separator") + "pail-backups";
+                _path = new File(".").getCanonicalPath() + System.getProperty("file.separator") + "mcservergui-backups";
             } catch (IOException e) {
                 _path = "";
                 System.out.println("WARNING: Could not set a default backup path.");
@@ -332,20 +332,20 @@ public class Config {
     }
 
     public boolean load() {
-        File configFile = new File("pailconfig.json");
+        File configFile = new File("guiconfig.json");
 
         // Check to make sure config file exist and if not, creates it.
         try {
             configFile.createNewFile();
         } catch (IOException e) {
-            System.out.println("Error creating file pailconfig.json!");
+            System.out.println("Error creating file guiconfig.json!");
             return false;
         }
 
         //Read in the config file to string configData.
         StringBuilder temp = new StringBuilder();
         try {
-            FileInputStream is = new FileInputStream("pailconfig.json");
+            FileInputStream is = new FileInputStream("guiconfig.json");
             boolean eof = false;
             while(!eof) {
                 try {
@@ -365,7 +365,7 @@ public class Config {
                 System.out.println("Error closing FileInputStream!");
             }
         } catch (FileNotFoundException e) {
-            System.out.println("pailconfig.json not found!");
+            System.out.println("guiconfig.json not found!");
             return false;
         }
         String configData = temp.toString();
@@ -393,7 +393,7 @@ public class Config {
                         setExtPort(jp.getIntValue());
                     } else if ("Proxy Internal Port".equals(fieldname)) {
                         setIntPort(jp.getIntValue());
-                    } else if ("MC Server Start on Pail Start".equals(fieldname)) {
+                    } else if ("MC Server Start on GUI Start".equals(fieldname)) {
                         setServerStartOnStartup(jp.getBooleanValue());
                     } else if ("Custom Button 1".equals(fieldname)) {
                         setCustomButton1(jp.getText());
@@ -555,7 +555,7 @@ public class Config {
         //new File(backups.getPath()).mkdir();
         JsonFactory jf = new JsonFactory();
         try {
-            JsonGenerator jg = jf.createJsonGenerator(new File("pailconfig.json"), JsonEncoding.UTF8);
+            JsonGenerator jg = jf.createJsonGenerator(new File("guiconfig.json"), JsonEncoding.UTF8);
             jg.useDefaultPrettyPrinter();
             jg.writeStartObject();
             //General Config Options
@@ -564,7 +564,7 @@ public class Config {
             jg.writeBooleanField("Use Proxy Server", getProxy());
             jg.writeNumberField("Proxy External Port", getExtPort());
             jg.writeNumberField("Proxy Internal Port", getIntPort());
-            jg.writeBooleanField("MC Server Start on Pail Start", getServerStartOnStartup());
+            jg.writeBooleanField("MC Server Start on GUI Start", getServerStartOnStartup());
             jg.writeStringField("Command Prefix", getCommandPrefix());
             jg.writeStringField("Custom Button 1", getCustomButton1());
             jg.writeStringField("Custom Button 2", getCustomButton2());
@@ -648,7 +648,7 @@ public class Config {
             jg.writeEndObject();
             jg.close();
         } catch (IOException e) {
-            System.out.println("Error saving pailconfig.json");
+            System.out.println("Error saving guiconfig.json");
             return;
         }
     }

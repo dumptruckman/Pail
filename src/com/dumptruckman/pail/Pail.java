@@ -589,7 +589,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                     serverInfoPanel.add(transmittingBytes);
                 }
 
-                guiInfoPanel.setBorder(BorderFactory.createTitledBorder("Pail Information"));
+                guiInfoPanel.setBorder(BorderFactory.createTitledBorder("GUI Information"));
                 guiInfoPanel.setName("guiInfoPanel");
                 guiInfoPanel.setLayout(new MigLayout());
                 mainWindowTab.add(guiInfoPanel, "grow");
@@ -1894,7 +1894,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                         config.backups.setPath(fc.getSelectedFile().getPath());
                     }
                 } catch (IOException e) {
-                    System.err.println("[Pail] Error retrieving program path.");
+                    System.err.println("[MC Server GUI] Error retrieving program path.");
                 }
             }
         });
@@ -2290,7 +2290,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 if (useProxyCheckBox.isSelected()) {
                     playerList.setToolTipText("This shows a list of players connected to the server.  Right click a to pull up the player action menu.");
                 } else {
-                    playerList.setToolTipText("Player list is currently only supported when using the Pail's Proxy feature.");
+                    playerList.setToolTipText("Player list is currently only supported when using the GUI's Proxy feature.");
                 }
             }
         });
@@ -2863,9 +2863,9 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
             SwingUtilities.invokeAndWait(conOut);
             output = conOut.getOutput();
         } catch (InterruptedException ie) {
-            output = "[Pail] Interrupted while retrieving output from Pail!";
+            output = "[MC Server GUI] Interrupted while retrieving output from Server!";
         } catch (java.lang.reflect.InvocationTargetException ite) {
-            output = "[Pail] Error retrieving output from Pail!";
+            output = "[MC Server GUI] Error retrieving output from Server!";
         }
         
         output = output.replaceAll("(<html.*>|<body.*>|<head.*>|</head>|</body>|</html>)", "");
@@ -3197,12 +3197,12 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
             default:
                 text += "[INFO]";
         }
-        message = text + " Pail: " + message;
+        message = text + " MC Server GUI: " + message;
         // put message in console output
         addTextToConsoleOutput(message);
 
         // log message to file
-        File logFile = new File("pail.log");
+        File logFile = new File("gui.log");
         if (!logFile.exists()) {
             try {
                 logFile.createNewFile();
