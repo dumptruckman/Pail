@@ -4,9 +4,7 @@
     <list default="true" id="9499fde1-e1a9-4258-a0d9-8d59f91b9434" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/AboutBox.properties" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/AboutBox.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/ServerProperties.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/pail/config/ServerProperties.java" />
     </list>
     <ignored path="MC-Server-GUI--multi-.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -73,46 +71,10 @@
       <file leaf-file-name="Pail.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3448" column="26" selection-start="163536" selection-end="163540" vertical-scroll-proportion="77.97944">
+            <state line="813" column="86" selection-start="40535" selection-end="40535" vertical-scroll-proportion="0.6691542">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChangeLog.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/ChangeLog.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ColorChooser.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/ColorChooser.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomTasks.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/CustomTasks.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerWarningDialog.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/ServerWarningDialog.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -129,7 +91,16 @@
       <file leaf-file-name="MCServerModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="35" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.0">
+            <state line="68" column="34" selection-start="1816" selection-end="1816" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerProperties.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/config/ServerProperties.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="202" column="6" selection-start="7245" selection-end="7245" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -149,7 +120,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/WebInterface.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/webinterface/php_json_api.php" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/task/TaskDialog.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/Player.java" />
@@ -162,9 +132,10 @@
         <option value="$PROJECT_DIR$/TODO" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/stream/StreamTunnel.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/config/Config.java" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/Pail.properties" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/resources/AboutBox.properties" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/config/ServerProperties.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java" />
       </list>
     </option>
   </component>
@@ -606,29 +577,29 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32639793" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969324" sideWeight="0.609447" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39976957" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32603687" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32509753" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32822084" sideWeight="0.609447" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993865" sideWeight="0.609447" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2517301" sideWeight="0.61118335" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38881665" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38881665" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875723" sideWeight="0.6624041" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39897698" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
       <value>
         <are-packages-shown value="false" />
@@ -650,7 +621,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Proxy for 1.8.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Renamed stuff to MC Server GUI" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -665,6 +636,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value=".9.7-dev converted almost all main window to miglayout.. need to redo backup tab still.  about to attempt removal of jdesktop." />
     <MESSAGE value="Updated Proxy for 1.8.1" />
+    <MESSAGE value="Renamed stuff to MC Server GUI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -674,16 +646,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LICENSE">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="103" selection-start="4156" selection-end="4156" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CHANGELOG">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="0" selection-start="17" selection-end="1234" vertical-scroll-proportion="0.0" />
@@ -706,11 +668,6 @@
         <state line="6" column="28" selection-start="86" selection-end="90" vertical-scroll-proportion="-2.6153846">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="35" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/resources/ChangeLog.properties">
@@ -769,9 +726,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/proxyserver/ProxyServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="135" column="24" selection-start="4316" selection-end="4316" vertical-scroll-proportion="0.33193278">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/mcserver/MCServerModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="34" selection-start="1816" selection-end="1816" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/config/ServerProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="202" column="6" selection-start="7245" selection-end="7245" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/pail/Pail.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3448" column="26" selection-start="163536" selection-end="163540" vertical-scroll-proportion="77.97944">
+        <state line="813" column="86" selection-start="40535" selection-end="40535" vertical-scroll-proportion="0.6691542">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

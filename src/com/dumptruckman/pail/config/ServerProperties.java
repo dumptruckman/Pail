@@ -50,7 +50,7 @@ public class ServerProperties implements Observer {
         properties.setProperty("server-port", "25566");
         properties.setProperty("spawn-animals", "true");
         properties.setProperty("spawn-monsters", "true");
-        properties.setProperty("spawn-protection", "16");
+        //properties.setProperty("spawn-protection", "16");
         properties.setProperty("view-distance", "10");
         properties.setProperty("white-list", "false");
 
@@ -198,9 +198,9 @@ public class ServerProperties implements Observer {
         return Integer.valueOf(properties.getProperty("view-distance"));
     }
 
-    public String getSpawnProtection() {
-        return properties.getProperty("spawn-protection");
-    }
+    //public String getSpawnProtection() {
+    //    return properties.getProperty("spawn-protection");
+    //}
 
     public boolean getSpawnAnimals() {
         if (properties.getProperty("spawn-animals").equals("true")) {
@@ -260,10 +260,10 @@ public class ServerProperties implements Observer {
         hasChanges = true;
     }
 
-    public void setSpawnProtection(String spawnProtection) {
-        properties.setProperty("spawn-protection", spawnProtection);
-        hasChanges = true;
-    }
+    //public void setSpawnProtection(String spawnProtection) {
+    //    properties.setProperty("spawn-protection", spawnProtection);
+    //    hasChanges = true;
+    //}
 
     public void setSpawnMonsters(boolean spawnMonsters) {
         properties.setProperty("spawn-monsters", Boolean.toString(spawnMonsters));

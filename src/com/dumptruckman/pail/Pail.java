@@ -280,7 +280,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
         spawnAnimalsCheckBox = new JCheckBox();
         spawnMonstersCheckBox = new JCheckBox();
         spawnProtectionLabel = new JLabel();
-        spawnProtectionField = new JTextField();
+        //spawnProtectionField = new JTextField();
         viewDistanceLabel = new JLabel();
         viewDistanceSpinner = new JSpinner();
         whiteListCheckBox = new JCheckBox();
@@ -799,7 +799,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                         whiteListCheckBox.setName("whiteListCheckBox");
                         serverPropertiesPanel.add(whiteListCheckBox, "growx, wrap");
 
-                        spawnProtectionLabel.setText(lang.getString("spawnProtectionLabel.text"));
+                        /*spawnProtectionLabel.setText(lang.getString("spawnProtectionLabel.text"));
                         spawnProtectionLabel.setName("spawnProtectionLabel");
                         serverPropertiesPanel.add(spawnProtectionLabel, "growx 0, split 6");
 
@@ -807,11 +807,11 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                         spawnProtectionField.setName("spawnProtectionField");
                         spawnProtectionField.putClientProperty("JComponent.sizeVariant", "small");
                         SwingUtilities.updateComponentTreeUI(spawnProtectionField);
-                        serverPropertiesPanel.add(spawnProtectionField, "growx");
+                        serverPropertiesPanel.add(spawnProtectionField, "growx");*/
 
                         viewDistanceLabel.setText(lang.getString("viewDistanceLabel.text"));
                         viewDistanceLabel.setName("viewDistanceLabel");
-                        serverPropertiesPanel.add(viewDistanceLabel, "growx 0");
+                        serverPropertiesPanel.add(viewDistanceLabel, "growx 0, split 4");
 
                         viewDistanceSpinner.setModel(new SpinnerNumberModel(10, 3, 15, 1));
                         viewDistanceSpinner.setName("viewDistanceSpinner");
@@ -2564,7 +2564,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
     public javax.swing.JToggleButton showWebPasswordButton;
     public javax.swing.JCheckBox spawnAnimalsCheckBox;
     public javax.swing.JCheckBox spawnMonstersCheckBox;
-    public javax.swing.JTextField spawnProtectionField;
+    //public javax.swing.JTextField spawnProtectionField;
     public javax.swing.JLabel spawnProtectionLabel;
     public javax.swing.JCheckBox startServerOnLaunchCheckBox;
     public javax.swing.JButton startstopButton;
@@ -2942,7 +2942,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 levelSeedField.setText(serverProperties.getLevelSeed());
                 serverIpField.setText(serverProperties.getServerIp());
                 serverPortField.setText(serverProperties.getServerPort());
-                spawnProtectionField.setText(serverProperties.getSpawnProtection());
+                //spawnProtectionField.setText(serverProperties.getSpawnProtection());
                 maxPlayersSpinner.setValue(serverProperties.getMaxPlayers());
                 viewDistanceSpinner.setValue(serverProperties.getViewDistance());
             }
@@ -3082,7 +3082,7 @@ public class Pail extends javax.swing.JFrame implements ComponentListener {
                 serverProperties.setLevelSeed(levelSeedField.getText());
                 serverProperties.setServerIp(serverIpField.getText());
                 serverProperties.setServerPort(serverPortField.getText());
-                serverProperties.setSpawnProtection(spawnProtectionField.getText());
+                //serverProperties.setSpawnProtection(spawnProtectionField.getText());
                 serverProperties.setMaxPlayers(Integer.valueOf(maxPlayersSpinner.getValue().toString()));
                 serverProperties.setViewDistance(Integer.valueOf(viewDistanceSpinner.getValue().toString()));
                 if (!server.isRunning()) {
